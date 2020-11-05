@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>master</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <style>
+        :root{
+            --red: #f1344a;
+            --myred: #e71d36;
+            --myorange: #ff9f1c;
+            --mylightgey: #fdfffc;
+            --mylightblue: #2ec4b6;
+            --mydarkblue: #011627;
+        }
+        /* width */
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px var(--mydarkblue); 
+            border-radius: 10px;
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: var(--mylightblue);
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--mydarkblue);
+        }
+        .wrapper{
+            display: flex;
+            text-decoration: none;
+            transition: all .3s;
+            margin-top: 66px;
+        }
+        #sidebar{
+            min-width: 250px;
+            max-width: 250px;
+            background: var(--red);
+            transition: all .3s;
+            height: 100%;
+            position: fixed;
+            top: 66px;
+            left: 0;
+            overflow-y: auto;
+            border: var(--mylightgey);
+        }
+        #sidebar.active{
+            margin-left: -250px;
+        }
+        #sidebar .sidebar-header{
+            padding: 20px;
+            background: var(--mydarkblue);
+        }
+        #sidebar ul.components{
+            padding: 20px;
+            border-bottom: 1px solid var(--mydarkblue);
+        }
+        #sidebar ul li a{
+            color: white;
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+            text-decoration: none;
+        }
+        #sidebar ul li a:hover{
+            color: white;
+            background-color: var(--myred);
+        }
+        #sidebar ul li.active > a,
+        #sidebar a[aria-expanded="true"]{
+            color: white;
+            background-color: var(--myred);
+        }
+        #sidebar a[data-toggle="collapse"]{
+            position: relative;
+        }
+        .dropdown-toggle::after{
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 20%;
+            transform: translateY(-50%);
+        }
+        #sidebar ul ul a{
+            padding-left: 30px !important;
+            background-color: var(--red);
+            color: white;
+        }
+        #content{
+            width: 100%;
+            padding: 20px;
+            min-height: calc(100vh - 66px);
+            transition: all .3s;
+            margin-left: 250px;
+        }
+        #content.active{
+            margin-left: 0;
+        }
+        @media (max-width: 768px){
+            #sidebar{
+                margin-left: -250px;
+            }
+            #sidebar.active{
+                margin-left: 0;
+            }
+        }
+        #logo{
+            height: 50px;
+        }
+        .avatar{
+            border: 5px solid var(--mylightgey);
+            width: 65px;
+            height: 65px;
+            margin: 0 auto;
+        }
+    </style>
+
+    <!-- Scripts -->
+    <script src="/node_modules/jquery/dist/jquery.slim.min.js"></script>
+    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+    
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+            $('#sidebarCollapse').click(function(){
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar fixed-top navbar-light bg-dark">
+        <button type="button" id="sidebarCollapse" class="btn btn-danger">
+            <i class="fas fa-align-justify"></i>
+        </button>
+        <img src="/resources/img/logo.png" alt="BB Intranet" id="logo">
+    </nav>
+    <div class="wrapper">
+        <nav id="sidebar">
+            <div class="sidebar-header text-light text-center">
+                <img src="/resources/img/avatar/m.png" alt="avatar" class="avatar rounded-circle d-block">
+                <h4 class="d-block ml-auto mr-auto">Tan Xu Heng</h4>
+                <span class="d-block ml-auto mr-auto">SSGT</span>
+            </div>
+            <ul class="list-unstyled">
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/">Home</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Abt</a></li>
+                <li>
+                    <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu2">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/">Home</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="content">

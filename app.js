@@ -26,12 +26,18 @@ app.use('/resources',express.static('resources'));
 
 app.use(morgan('dev'));
 
-app.get('/',function(req, res){
-    res.render('user/index');
+app.get('/sign-in',function(req, res){
+    res.render('user/sign_in');
 });
 
-app.get('/login',function(req, res){
-    res.render('user/login');
+app.get('/sign-up',function(req, res){
+    res.render('user/sign_up');
+});
+
+app.get('/home',function(req, res){
+    var data = [];
+    data['path1'] = 'home';
+    res.render('user/index',data);
 });
 
 app.get('/badges',function(req, res){

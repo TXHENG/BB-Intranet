@@ -2,11 +2,12 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 var moment = require('moment');
-const User = require('./models/user');
-const Badge = require('./models/badge');
+const User = require('./models/User');
+const Badge = require('./models/Badge');
 
 mongoose.set('useNewUrlParser',true);
 mongoose.set('useUnifiedTopology',true);
+mongoose.set('useFindAndModify', false);
 
 // express app
 const app = express();
@@ -21,17 +22,15 @@ mongoose.connect(dbURI)
 app.set('view engine', 'ejs');
 app.use('/node_modules',express.static('node_modules'));
 app.use('/resources',express.static('resources'));
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
 // routes (will automatically find in "views" folder)
 
 app.use(morgan('dev'));
 
-app.get('/sign-in',function(req, res){
-    res.render('user/sign_in');
-});
-
-app.get('/sign-up',function(req, res){
-    res.render('user/sign_up');
+app.get('/',function(req,res){
+    res.redirect('/home');
 });
 
 app.get('/home',function(req, res){

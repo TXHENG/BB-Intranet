@@ -11,6 +11,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@popperjs/core": "^2.5.4",
+    "bcrypt": "^5.0.0",
     "bootstrap": "^4.5.3",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
@@ -19,6 +20,7 @@
     "moment": "^2.29.1",
     "mongoose": "^5.10.13",
     "morgan": "^1.10.0",
-    "sweetalert2": "^10.9.0"
+    "sweetalert2": "^10.9.0",
+    "validator": "^13.1.17"
   }
 }

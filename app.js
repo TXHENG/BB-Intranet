@@ -1,7 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-var moment = require('moment');
+const moment = require('moment');
+const cookieParser = require('cookie-parser');
+
+// Models
 const User = require('./models/User');
 const Badge = require('./models/Badge');
 
@@ -24,10 +27,15 @@ app.use('/node_modules',express.static('node_modules'));
 app.use('/resources',express.static('resources'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(cookieParser());
 
 // routes (will automatically find in "views" folder)
 
 app.use(morgan('dev'));
+
+// auth route
+const userroute = require('./routes/authRoutes');
+app.use(userroute);
 
 app.get('/',function(req,res){
     res.redirect('/home');

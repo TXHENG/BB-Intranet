@@ -93,28 +93,30 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center form_container">
-                    <form>
-                        <div class="input-group mb-3">
+                    <form id="login-form">
+                        <div class="input-group">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-at"></i></span>
                             </div>
                             <input type="email" name="email" class="form-control input_user" value="" placeholder="Email">
                         </div>
-                        <div class="input-group mb-2">
+                        <div class="input-group mb-3" id="emailError"></div>
+                        <div class="input-group">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
                             <input type="password" name="password" class="form-control input_pass" value=""
                                 placeholder="Password">
                         </div>
-                        <div class="form-group">
+                        <div class="input-group mb-3" id="pwPattern"></div>
+                        <!-- <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="customControlInline">
                                 <label class="custom-control-label" for="customControlInline">Remember me</label>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="d-flex justify-content-center mt-3 login_container">
-                            <button type="button" name="button" class="btn login_btn">Login</button>
+                            <button type="submit" name="button" class="btn login_btn">Login</button>
                         </div>
                     </form>
                 </div>
@@ -131,5 +133,37 @@
         </div>
     </div>
 </body>
-
+<script>
+    $(document).ready(function(){
+        $("#login-form").submit(async (e)=>{
+            e.preventDefault();
+            $("#pwPattern").text("");
+            $("#emailError").text("");
+            const email = $("[name='email']").val();
+            const password = $("[name='password']").val();
+            try{
+                const res = await fetch('/sign-in',{
+                    method:'POST',
+                    body: JSON.stringify({email,password}),
+                    headers: {'Content-Type':'application/json'}
+                });
+                const data = await res.json();
+                if(data.errors){
+                    $("#emailError").css('color','red');
+                    $("#emailError").text(data.errors.email);
+                    $("#pwPattern").css('color','red');
+                    $("#pwPattern").text(data.errors.password);
+                }
+                if(data.user){
+                    Swal.fire({
+                        title: 'Success',
+                        text : 'Login successfully',
+                        icon : 'success'
+                    }).then(()=>{location.assign('/');});
+                }
+            }
+            catch(err){console.log(err);}
+        });
+    });
+</script>
 </html>

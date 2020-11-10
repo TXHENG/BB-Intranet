@@ -7,7 +7,7 @@
     <%- include('../styles.ejs') -%>
     <%- include('../scripts.ejs') -%>
     <style>
-        #pwPattern, #conPw{
+        #pwPattern, #conPw, #emailError{
             font-size: 12px;
         }
         .user_card {
@@ -103,12 +103,13 @@
                             </div>
                             <input type="text" name="name" class="form-control input_user" value="" placeholder="Name" required>
                         </div>
-                        <div class="input-group mb-3">
+                        <div class="input-group">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-at"></i></span>
                             </div>
                             <input type="email" name="email" class="form-control input_email" value="" placeholder="Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
                         </div>
+                        <div class="mb-3 text-center" id="emailError" class="text-danger"></div>
                         <div class="input-group mb-3">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-anchor"></i></span>
@@ -186,6 +187,12 @@
                 field.css('color','green');
                 field.text("Okay!");
             }
+            
+            if(value == $("[name='confirm_password']").val()){
+                var field2 = $('#conPw');
+                field2.css('color','green');
+                field2.text("Okay!");
+            }
         });
         $("[name='confirm_password']").keyup(function(){
             var pw = $("[name='password']").val();
@@ -203,8 +210,10 @@
                 field.text("Okay!");
             }
         });
-        $("[name='button']").click(function(e){
+        $("#register-form").submit(async (e)=>{
             e.preventDefault();
+            $("#pwPattern").text("");
+            $("#emailError").text("");
             if($("[name='password']").val() != $("[name='confirm_password']").val()){
                 Swal.fire({
                     title: 'Oops...',
@@ -212,30 +221,34 @@
                     text:  'Password and confirm password you entered are different',
                 });
             } else {
-                $.ajax({
-                    url: '/sign-up',
-                    action: '/sign-up',
-                    method: 'post',
-                    dataType: 'json',
-                    data: $("#register-form").serialize(),
-                    success: function(result){
-                        var flag = result.reload;
-                        console.log(flag);
-                        Swal.fire(result.script);
-                        setTimeout(function(){
-                            if(flag){
-                                location.reload();
-                            } else {
-                                console.log('redirect');
-                                location.href = "/sign-in";
-                            }
-                        },3000)
-                    },
-                    error: function(){
-
+                const name = $("[name='name']").val();
+                const email = $("[name='email']").val();
+                const rank = $("[name='rank']").val();
+                const gender = $("[name='gender']").val();
+                const password = $("[name='password']").val();
+                try{
+                    const res = await fetch('/sign-up',{
+                        method:'POST',
+                        body: JSON.stringify({name,email,rank,gender,password}),
+                        headers: {'Content-Type':'application/json'}
+                    });
+                    const data = await res.json();
+                    if(data.errors){
+                        $("#emailError").css('color','red');
+                        $("#emailError").text(data.errors.email);
+                        $("#pwPattern").css('color','red');
+                        $("#pwPattern").text(data.errors.password);
                     }
-                });
+                    if(data.user){
+                        Swal.fire({
+                            title: 'Register Successfully',
+                            text : 'Your account has been registered successfully',
+                            icon : 'success'
+                        }).then(()=>{location.assign('/sign-in');});
+                    }
+                }
+                catch(err){}
             }
-        })
+        });
     });
 </script>

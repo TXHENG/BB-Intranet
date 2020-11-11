@@ -38,9 +38,7 @@ const createToken = (id) => {
 }
 
 module.exports.signup_get = (req,res)=>{
-    var data = [];
-    data['ranks'] = ['Recruit','Private','Lance Corporal','Corporal','Sergeant','Staff Sergeant'];
-    res.render('user/sign_up', data);
+    res.render('user/sign_up');
 }
 
 module.exports.signup_post = async(req,res)=>{
@@ -77,4 +75,9 @@ module.exports.signin_post = async (req,res)=>{
         const errors = handleErrors(err);
         res.status(400).json({errors});
     }
+}
+
+module.exports.signout_get = (req, res)=>{
+    res.cookie('jwt','',{ maxAge:1 });
+    res.redirect('/sign-in');
 }

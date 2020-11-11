@@ -14,6 +14,8 @@
                 $('#content').toggleClass('active');
             });
         });
+
+
     </script>
 </head>
 <body>
@@ -28,7 +30,7 @@
             <div class="sidebar-header text-light text-center">
                 <img src="/resources/img/avatar/m.png" alt="avatar" class="avatar rounded-circle d-block">
                 <h4 class="d-block ml-auto mr-auto"><%= (locals.user)?user.name:'-' %></h4>
-                <span class="d-block ml-auto mr-auto"><%= (locals.user)?user.rank:'-' %></span>
+                <span class="d-block ml-auto mr-auto"><%= (locals.user && locals.ranks)?ranks[user.rank]:'-' %></span>
             </div>
             <ul class="list-unstyled">
                 <li class="<%= (locals.path1)?(path1 === 'home' ? 'active' : ''):'' %>"><a href="/home"><i class="fas fa-home"></i> Home</a>
@@ -40,7 +42,7 @@
                         <li><a href="/">Home</a></li>
                     </ul>
                 </li>
-                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="/sign-out"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
         <div id="content">

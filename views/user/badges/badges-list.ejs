@@ -1,0 +1,27 @@
+<%- include('../partials/header.ejs') -%>
+<title>Badge List - BB Intranet</title>
+<section>
+    <h1 class="border-bottom">Badge List</h1>
+    <table class="table">
+        <thead>
+            <th>Badge name</th>
+            <th>Basic Date</th>
+            <th>Advance Date</th>
+        </thead>
+        <tbody>
+            
+            <% if(user.badges.length > 0) { %>
+                <% (user.badges).forEach(badge => { %>
+                    <tr>
+                        <td><%= badge.name %></td>
+                        <td><%= (badge.basicDate)?moment(badge.basicDate).format('DD-MMM-YYYY'):'-' %></td>
+                        <td><%= (badge.advanceDate)?moment(badge.advanceDate).format('DD-MMM-YYYY'):'-' %></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr><td colspan="3" class="text-center">No result found!</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+</section>
+<%- include('../partials/footer.ejs') -%>

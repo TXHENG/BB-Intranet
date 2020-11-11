@@ -4,14 +4,25 @@
   "description": "Try to create an intranet using node js",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "TXHeng",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@popperjs/core": "^2.5.4",
+    "bcrypt": "^5.0.0",
     "bootstrap": "^4.5.3",
+    "cookie-parser": "^1.4.5",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
-    "jquery": "^3.5.1"
+    "jquery": "^3.5.1",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^8.2.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.10.13",
+    "morgan": "^1.10.0",
+    "sweetalert2": "^10.9.0",
+    "validator": "^13.1.17"
   }
 }

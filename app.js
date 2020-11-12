@@ -14,15 +14,13 @@ mongoose.set('useNewUrlParser',true);
 mongoose.set('useUnifiedTopology',true);
 mongoose.set('useFindAndModify', false);
 
-// Auth Middleware
-const { requireAuth, checkUser } = require('./middleware/UserMiddleware');
-
 // Models
 const User = require('./models/User');
 const Badge = require('./models/Badge');
 
 // Routes
-const UserRoutes = require('./routes/authRoutes');
+const UserRoutes = require('./routes/userRoutes');
+const AdminRoutes = require('./routes/adminRoutes');
 
 // Connect to MongoDB Atlas
 const dbURI = "mongodb+srv://TXHeng:@TXHeng1419@bbintranet.66t77.mongodb.net/BBintranet?retryWrites=true&w=majority";
@@ -36,29 +34,16 @@ app.use('/node_modules',express.static('node_modules'));
 app.use('/resources',express.static('resources'));
 
 // routes (will automatically find in "views" folder)
-app.get('*',checkUser,(req,res,next)=>{
-    var data=[];
+app.set('subdomain offset', 1);
+
+app.get('*',(req,res,next)=>{
     res.locals.moment = moment;
     res.locals.ranks = ['Recruit','Private','Lance Corporal','Corporal','Sergeant','Staff Sergeant'];
     next();
 });
+
+// admin route
+app.use('/admin', AdminRoutes);
+
+// user route
 app.use(UserRoutes);
-app.get('/',requireAuth,(req,res)=>{
-    res.redirect('/home');
-});
-
-app.get('/home',requireAuth,(req, res)=>{
-    var data = [];
-    data['path1'] = 'home';
-    res.render('user/index',data);
-});
-
-app.get('/badges',requireAuth,(req, res)=>{
-    var data = [];
-    data['path1'] = 'badges';
-    res.render('user/badges/badges-list',data);
-});
-
-app.use((req,res)=>{
-    res.status(404).render('user/404');
-});

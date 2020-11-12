@@ -2,7 +2,7 @@
 <title>Badge List - BB Intranet</title>
 <section>
     <h1 class="border-bottom">Badge List</h1>
-    <table class="table">
+    <table class="table" id="badge-list">
         <thead>
             <th>Badge name</th>
             <th>Basic Date</th>
@@ -19,7 +19,7 @@
                     </tr>
                 <% }) %>
             <% } else { %>
-                <tr><td colspan="3" class="text-center">No result found!</td></tr>
+                <tr><td colspan="3" class="text-center text-danger"><h1>No result found!</h1></td></tr>
             <% } %>
         </tbody>
     </table>

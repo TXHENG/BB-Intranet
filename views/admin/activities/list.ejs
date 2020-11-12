@@ -1,0 +1,42 @@
+<%- include('../partials/header.ejs') -%>
+<section>
+    <div class="content-wrapper">
+        <div class="content-heading border-bottom d-flex justify-content-between">
+            <h1 class="">Activity List</h1>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#new-activity-modal">Add new activity</button>
+            </div>
+        </div>
+        <div class="content-body">
+            <table class="table" id="member-list">
+                <thead>
+                    <th>Activity name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Duration</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    <% if(activities.length > 0) { %>
+                        <% (activities).forEach(activity => { %>
+                            <tr>
+                                <td><%= activity.name %></td>
+                                <td><%= moment(activity.startDate).format('DD-MMM-YYYY') %></td>
+                                <td><%= moment(activity.endDate).format('DD-MMM-YYYY') %></td>
+                                <% day = (activity.endDate-activity.startDate)/24/60/60/1000 %>
+                                <td><%= day + (day > 1 ? ' days' : ' day') %></td>
+                                <td>
+                                    <button class="btn-danger btn" data-toggle="tooltip" title="Delete" data-activity-id="<%= activity._id %>"><i class="far fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr><td colspan="3" class="text-center text-danger"><h1>No result found!</h1></td></tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <%- include('./new-modal.ejs') -%>
+</section>
+<%- include('../partials/footer.ejs') -%>

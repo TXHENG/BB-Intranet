@@ -1,9 +1,9 @@
-const User = require('../models/User');
+const Admin = require('../models/Admin');
 const jwt = require('jsonwebtoken');
 
 const validToken = (token) => {
     var flag = false;
-    jwt.verify(token,'txhengCreateBBIntranet',(err,decodedToken)=>{
+    jwt.verify(token,'txhengCreateBBIntranetAdmin',(err,decodedToken)=>{
         if(err){ // invalid token
             console.log(err.message);
             flag = false;       
@@ -15,7 +15,7 @@ const validToken = (token) => {
     return flag;
 }
 
-const requireAuth = (req,res,next) => {
+const requireAdminAuth = (req,res,next) => {
     const token = req.cookies.jwt;
     if(token){
         // token exist, verify now
@@ -30,25 +30,25 @@ const requireAuth = (req,res,next) => {
     }
 }
 
-const checkUser = (req,res,next)=>{
+const checkAdmin = (req,res,next)=>{
     const token = req.cookies.jwt;
     if(token){
         // token exist, verify now
-        jwt.verify(token,'txhengCreateBBIntranet', async (err,decodedToken)=>{
+        jwt.verify(token,'txhengCreateBBIntranetAdmin', async (err,decodedToken)=>{
             if(err){ // invalid token
                 console.log(err.message);
-                res.locals.user = null;
+                res.locals.admin = null;
                 next();        
             } else {
-                let user = await User.findById(decodedToken.id);
-                res.locals.user = user;
+                let admin = await Admin.findById(decodedToken.id);
+                res.locals.admin = admin;
                 next();
             }
         });
     } else {
-        res.locals.user = null;
+        res.locals.admin = null;
         next();
     }
 }
 
-module.exports = {requireAuth, checkUser};
+module.exports = {requireAdminAuth, checkAdmin};

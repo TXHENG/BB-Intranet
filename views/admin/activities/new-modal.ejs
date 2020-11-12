@@ -50,7 +50,7 @@
 			const activity_name = $('#activity_name').val();
 
 			try{
-				const res = await fetch('/admin/activity/new',{
+				const res = await fetch('/admin/activities/new',{
 					method: 'POST',
 					body: JSON.stringify({start_date,end_date,activity_name}),
                     headers: {'Content-Type':'application/json'}
@@ -67,7 +67,7 @@
 						title: 'Create Successfully',
 						text : '"'+data.activity.name+'" has been created successfully',
 						icon : 'success'
-					}).then(()=>{location.assign('/admin/activity/'+data.activity._id);});
+					}).then(()=>{location.assign('/admin/activities/'+data.activity._id);});
 				}
 			} catch(err){}
 		});

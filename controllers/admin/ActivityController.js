@@ -23,5 +23,7 @@ module.exports.new = async (req,res)=>{
 }
 
 module.exports.detail = async (req,res)=>{
+    var data = [];
+    data['path1'] = 'activities';
     res.render('admin/activities/detail');
 }

@@ -18,9 +18,10 @@ router.get('/home',requireAdminAuth,AdminController.index);
 
 router.get('/member-list',requireAdminAuth,UserController.list);
 
-router.get('/activity',requireAdminAuth,ActivityController.list);
-router.post('/activity/new',requireAdminAuth,ActivityController.new);
-router.get('/activity/:id',requireAdminAuth,ActivityController.detail);
+
+router.get('/activities',requireAdminAuth,ActivityController.list);
+router.post('/activities/new',requireAdminAuth,ActivityController.new);
+router.get('/activities/:id',requireAdminAuth,ActivityController.detail);
 
 router.get('/404',(req,res)=>{
     res.status(404).render('admin/404');

@@ -8,13 +8,13 @@
             </div>
         </div>
         <div class="content-body">
-            <table class="table" id="member-list">
+            <table class="table" id="member-list" data-filtering="true" data-sorting="true" data-paging="true" data-paging-count-format="{CP} of {TP} (total {TR} records)" data-filter-position="right">
                 <thead>
-                    <th>Activity name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Duration</th>
-                    <th>Actions</th>
+                    <th data-filterable='true' data-sortable="false">Activity name</th>
+                    <th data-filterable='true' data-sortable="false">Start Date</th>
+                    <th data-filterable='true' data-sortable="false">End Date</th>
+                    <th data-filterable='true' data-sortable="true">Duration (Day)</th>
+                    <th data-filterable='false' data-sortable="false">Actions</th>
                 </thead>
                 <tbody>
                     <% if(activities.length > 0) { %>
@@ -23,15 +23,12 @@
                                 <td><%= activity.name %></td>
                                 <td><%= moment(activity.startDate).format('DD-MMM-YYYY') %></td>
                                 <td><%= moment(activity.endDate).format('DD-MMM-YYYY') %></td>
-                                <% day = (activity.endDate-activity.startDate)/24/60/60/1000 %>
-                                <td><%= day + (day > 1 ? ' days' : ' day') %></td>
+                                <td><%= moment(activity.endDate).diff(moment(activity.startDate),'days') %></td>
                                 <td>
                                     <button class="btn-danger btn" data-toggle="tooltip" title="Delete" data-activity-id="<%= activity._id %>"><i class="far fa-trash-alt"></i></button>
                                 </td>
                             </tr>
                         <% }) %>
-                    <% } else { %>
-                        <tr><td colspan="3" class="text-center text-danger"><h1>No result found!</h1></td></tr>
                     <% } %>
                 </tbody>
             </table>
@@ -39,4 +36,16 @@
     </div>
     <%- include('./new-modal.ejs') -%>
 </section>
+<script>
+    $(document).ready(()=>{
+        $('#member-list').footable({
+            paging:{
+                size:15,
+            },
+            components:{
+                filtering: FooTable.MyFiltering
+            }
+        });
+    });
+</script>
 <%- include('../partials/footer.ejs') -%>

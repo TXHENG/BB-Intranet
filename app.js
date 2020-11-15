@@ -17,6 +17,7 @@ mongoose.set('useFindAndModify', false);
 // Models
 const User = require('./models/User');
 const Badge = require('./models/Badge');
+const Admin = require('./models/Admin');
 
 // Routes
 const UserRoutes = require('./routes/userRoutes');

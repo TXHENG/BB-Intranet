@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-
+const Admin = require('./../../models/Admin');
 // error handler
-const handleErrors = (err) => {
+const handleAdminSignUpInErrors = (err) => {
     console.log(err.message, err.code);
     let errors = { email:'', password:'' };
 
@@ -56,7 +56,7 @@ module.exports.signup_post = async(req,res)=>{
         });
         res.status(201).json({admin:admin._id});
     } catch (err) {
-        const errors = handleErrors(err);
+        const errors = handleAdminSignUpInErrors(err);
         res.status(400).json({errors});
     }
 }
@@ -75,7 +75,7 @@ module.exports.signin_post = async (req,res)=>{
         res.status(200).json({admin:admin._id});
     }
     catch (err){
-        const errors = handleErrors(err);
+        const errors = handleAdminSignUpInErrors(err);
         res.status(400).json({errors});
     }
 }

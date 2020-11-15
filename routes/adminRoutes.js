@@ -22,6 +22,7 @@ router.get('/member-list',requireAdminAuth,UserController.list);
 router.get('/activities',requireAdminAuth,ActivityController.list);
 router.post('/activities/new',requireAdminAuth,ActivityController.new);
 router.get('/activities/:id',requireAdminAuth,ActivityController.detail);
+router.post('/activities/:id/delete',requireAdminAuth,ActivityController.delete);
 
 router.get('/404',(req,res)=>{
     res.status(404).render('admin/404');

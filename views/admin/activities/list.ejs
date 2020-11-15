@@ -25,7 +25,10 @@
                                 <td><%= moment(activity.endDate).format('DD-MMM-YYYY') %></td>
                                 <td><%= moment(activity.endDate).diff(moment(activity.startDate),'days') %></td>
                                 <td>
-                                    <button class="btn-danger btn" data-toggle="tooltip" title="Delete" data-activity-id="<%= activity._id %>"><i class="far fa-trash-alt"></i></button>
+                                    <div class="btn-group">
+                                        <a class="btn-default btn border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/activities/<%= activity._id %>" target="_blank"><i class="fa fa-search"></i></a>
+                                        <button class="btn-danger btn" data-toggle="tooltip" title="Delete" data-delete-id="<%= activity._id %>"><i class="far fa-trash-alt"></i></button>
+                                    </div>
                                 </td>
                             </tr>
                         <% }) %>
@@ -37,7 +40,7 @@
     <%- include('./new-modal.ejs') -%>
 </section>
 <script>
-    $(document).ready(()=>{
+    $(document).ready(async()=>{
         $('#member-list').footable({
             paging:{
                 size:15,
@@ -45,6 +48,48 @@
             components:{
                 filtering: FooTable.MyFiltering
             }
+        },()=>{
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('[data-delete-id]').click(function(){
+                const id = $(this).attr("data-delete-id");
+                Swal.fire({
+                    title: "Are you sure",
+                    text: "Do you want to delete this activity permanently?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: 'Delete',
+                    cancelButtonText: 'Cancel',
+                }).then(async(result)=>{
+                    if(result.isConfirmed){
+                        const url = '/admin/activities/'+id+'/delete';
+                        try{
+                            const res = await fetch(url,{
+                                method:'POST',
+                                body: JSON.stringify(),
+                                headers: {'Content-Type':'application/json'}
+                            });
+                            const data = await res.json();
+                            console.log(data);
+                            if(data.errors){
+                                Swal.fire({
+                                    title: 'Error',
+                                    text : data.errors,
+                                    icon : 'error'
+                                });
+                            } else if (data.name) {
+                                Swal.fire({
+                                    title: 'Successfully',
+                                    text : 'Activity "'+data.name+'" has been deleted successfully',
+                                    icon : 'success'
+                                }).then(()=>{location.reload();});
+                            }
+                        }
+                        catch(err){}
+                    }
+                })
+            });
         });
     });
 </script>

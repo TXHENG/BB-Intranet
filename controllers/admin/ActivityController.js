@@ -27,3 +27,17 @@ module.exports.detail = async (req,res)=>{
     data['path1'] = 'activities';
     res.render('admin/activities/detail');
 }
+
+module.exports.delete = async (req,res)=>{
+    const id = req.params.id;
+    try{
+        let activity = await Activity.findById(id);
+        if(activity){
+            const name = activity.name;
+            await Activity.findByIdAndDelete(id);
+            res.status(201).json({name});
+        }
+    } catch (err) {
+        res.status(400).json({errors: "Activity id not found, please try again"});
+    }
+}

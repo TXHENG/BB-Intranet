@@ -20,9 +20,13 @@ router.get('/member-list',requireAdminAuth,UserController.list);
 
 
 router.get('/activities',requireAdminAuth,ActivityController.list);
+router.get('/activities/list-col-json',requireAdminAuth,ActivityController.list_col_json);
+router.get('/activities/list-row-json',requireAdminAuth,ActivityController.list_row_json);
 router.post('/activities/new',requireAdminAuth,ActivityController.new);
 router.get('/activities/:id',requireAdminAuth,ActivityController.detail);
 router.post('/activities/:id/delete',requireAdminAuth,ActivityController.delete);
+router.get('/activities/:id/info',requireAdminAuth,ActivityController.info);
+router.post('/activities/:id/edit',requireAdminAuth,ActivityController.edit);
 
 router.get('/404',(req,res)=>{
     res.status(404).render('admin/404');

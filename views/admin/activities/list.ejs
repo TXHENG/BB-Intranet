@@ -1,47 +1,32 @@
 <%- include('../partials/header.ejs') -%>
 <section>
     <div class="content-wrapper">
-        <div class="content-heading border-bottom d-flex justify-content-between">
-            <h1 class="">Activity List</h1>
-            <div class="d-flex align-items-center">
-                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#new-activity-modal">Add new activity</button>
+        <div class="content-heading border-bottom row">
+            <h1 class="col">Activity List</h1>
+            <div class="col-lg-2 col-md-2 mt-md-2 mt-lg-2 text-right">
+                <button class="btn btn-info" style="align-self: flex-end;" data-toggle="modal" data-target="#new-activity-modal">New activity</button>
             </div>
+            <select name="year" id="year" class="form-control col-lg-2 col-md-2 mt-md-2 mt-lg-2 mt-sm-2">
+                <%var selectedYear = locals.year ? year : moment().year() %>
+                <% for(var i = moment().year(); i >= 2020; i-- ) { %>
+                    <option value="<%= i %>" <%= i==moment().year()?"selected":"" %> ><%= i %></option>
+                <% } %> 
+            </select>
         </div>
         <div class="content-body">
-            <table class="table" id="member-list" data-filtering="true" data-sorting="true" data-paging="true" data-paging-count-format="{CP} of {TP} (total {TR} records)" data-filter-position="right">
-                <thead>
-                    <th data-filterable='true' data-sortable="false">Activity name</th>
-                    <th data-filterable='true' data-sortable="false">Start Date</th>
-                    <th data-filterable='true' data-sortable="false">End Date</th>
-                    <th data-filterable='true' data-sortable="true">Duration (Day)</th>
-                    <th data-filterable='false' data-sortable="false">Actions</th>
-                </thead>
-                <tbody>
-                    <% if(activities.length > 0) { %>
-                        <% (activities).forEach(activity => { %>
-                            <tr>
-                                <td><%= activity.name %></td>
-                                <td><%= moment(activity.startDate).format('DD-MMM-YYYY') %></td>
-                                <td><%= moment(activity.endDate).format('DD-MMM-YYYY') %></td>
-                                <td><%= moment(activity.endDate).diff(moment(activity.startDate),'days') %></td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a class="btn-default btn border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/activities/<%= activity._id %>" target="_blank"><i class="fa fa-search"></i></a>
-                                        <button class="btn-danger btn" data-toggle="tooltip" title="Delete" data-delete-id="<%= activity._id %>"><i class="far fa-trash-alt"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        <% }) %>
-                    <% } %>
-                </tbody>
+            <table class="table" id="activity-list" data-filtering="true" data-sorting="true" data-paging="true" data-paging-count-format="{CP} of {TP} (total {TR} records)" data-filter-position="right">
+                
             </table>
         </div>
     </div>
     <%- include('./new-modal.ejs') -%>
+    <%- include('./edit-modal.ejs') -%>
 </section>
 <script>
     $(document).ready(async()=>{
-        $('#member-list').footable({
+        $('#activity-list').footable({
+            columns: $.get('/admin/activities/list-col-json'),
+            rows: $.get('/admin/activities/list-row-json?year=<%= selectedYear %>'),
             paging:{
                 size:15,
             },
@@ -49,7 +34,41 @@
                 filtering: FooTable.MyFiltering
             }
         },()=>{
+
+            $('#year').change(function(){
+                if($(this).val().toString() != ""){
+                    location.replace('/admin/activities?year='+$(this).val().toString());
+                }
+            });
+
             $('[data-toggle="tooltip"]').tooltip();
+
+            $('[data-edit-id]').click(async function(){
+                const id = $(this).data('edit-id');
+                const res = await fetch('/admin/activities/'+id+'/info',{
+                    method: 'get',
+                    body: JSON.stringify(),
+                    headers: {'Content-Type':'application/json'}
+                });
+                const data = await res.json();
+                console.log(data);
+                if(data.errors){
+                    Swal.fire({
+                        title: 'Error',
+                        text : data.errors,
+                        icon : 'error'
+                    });
+                } else if(data.activity){
+                    console.log(data.activity._id);
+                    $('#edit-activity-modal').find('#edit_activity_id').val(data.activity._id);
+                    $('#edit-activity-modal').find('#edit_activity_name').val(data.activity.name);
+                    $('#edit-activity-modal').find('#edit_start_date').val(moment(data.activity.startDate).format('YYYYY-MM-DD'));
+                    $('#edit-activity-modal').find('#edit_end_date').val(moment(data.activity.endDate).format('YYYYY-MM-DD'));
+                    $('#edit-activity-modal').find('#edit_start_date').attr('max',moment(data.activity.endDate).format('YYYYY-MM-DD'));
+                    $('#edit-activity-modal').find('#edit_end_date').attr('min',moment(data.activity.startDate).format('YYYYY-MM-DD'));
+                    $('#edit-activity-modal').modal();
+                }
+            });
 
             $('[data-delete-id]').click(function(){
                 const id = $(this).attr("data-delete-id");

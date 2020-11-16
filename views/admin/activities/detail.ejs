@@ -1,5 +1,20 @@
 <%- include('../partials/header.ejs') -%>
 <section>
-    activity details
+    <div class="content-wrapper">
+        <div class="content-heading border-bottom row">
+            <div class="col">
+                <h1><%= activity.name %></h1>
+                <p class="text-muted">from <b><%= moment(activity.startDate).format('DD-MM-YYYY') %></b> to <b><%= moment(activity.endDate).format('DD-MM-YYYY') %></b> [<%= moment(activity.endDate).diff(moment(activity.startDate),"days")+1 %>]day(s)</p>
+            </div>
+        </div>
+        <div class="content-body">
+            <div class="row">
+                
+            </div>
+            <table class="table" id="member-list" data-filtering="true" data-sorting="true" data-paging="true" data-paging-count-format="{CP} of {TP} (total {TR} records)" data-filter-position="right">
+                
+            </table>
+        </div>
+    </div>
 </section>
 <%- include('../partials/footer.ejs') -%>

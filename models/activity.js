@@ -5,6 +5,7 @@ const ActivitySchema = new Schema({
     name: String,
     startDate: Date,
     endDate: Date,
+    members: Array
 });
 
 const Activity = mongoose.model('activity',ActivitySchema);

@@ -1,6 +1,6 @@
 const moment = require("moment");
-const { findById } = require("../../models/Activity");
 const Activity = require("../../models/Activity");
+const User = require("../../models/User");
 
 module.exports.list = async (req,res)=>{
     var data = [];
@@ -71,6 +71,7 @@ module.exports.detail = async (req,res)=>{
     var data = [];
     data['path1'] = 'activities';
     const id = req.params.id;
+    data['id'] = id;
     try{
         data['activity'] = await Activity.findById(id);
         res.render('admin/activities/detail',data);
@@ -108,4 +109,35 @@ module.exports.edit = async (req,res)=>{
         console.log(err);
         res.status(400).json({errors: "Activity id not found, please try again"});
     }
+}
+
+
+module.exports.detail_col = async (req,res)=>{
+    const col = [
+        {name:"rank",   title:"Rank",   filterable:true, sortable:true, type:"text"},
+        {name:"name",   title:"Name",   filterable:true, sortable:true, type:"text"},
+        {name:"squad",  title:"Squad",  filterable:true, sortable:true, type:"text",breakpoints:"xs sm"},
+        {name:"action", title:"Actions",filterable:false,sortable:false,type:"text",breakpoints:"xs sm"}
+    ]
+    res.json(col);
+}
+module.exports.detail_row = async (req,res)=>{
+    const id = req.params.id;
+    let result = [];
+    const activity = await Activity.findById(id);
+    const users = await User.find({
+        _id:{$in:activity.members}
+    });
+    users.forEach(user => {
+        result.push({
+            rank:rank[user.rank],
+            name:user.name,
+            squad: 0,
+            action: 
+            '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/activities/" target="_blank"><i class="fa fa-search"></i></a>'+
+            '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-edit-id=""><i class="fa fa-pen"></i></button>'+
+            '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id=""><i class="far fa-trash-alt"></i></button></div>'
+        });
+    });
+    res.json(result);
 }

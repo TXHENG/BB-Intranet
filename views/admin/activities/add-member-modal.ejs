@@ -1,0 +1,95 @@
+<!-- Modal -->
+<div class="modal fade" id="add-member-modal" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="font-weight-bold text-dark">
+					Add member to ...
+				</h4>
+				<button type="button" class="close" data-dismiss="modal">
+					&times;
+				</button>
+			</div>
+			<form role="form" id="add-member-form">
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="activity_name">Search And Add Member</label>
+						<select id="member_id" name="member_id" placeholder="Pick someone"></select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success">Create</button>
+					<button type="reset" class="btn btn-info">Reset</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+    const ranks = "<%= ranks %>".split(',');
+	$(document).ready( async function(){
+        const opts = await $.get('/admin/activities/<%= id %>/members');
+        console.log(opts);
+        $('#member_id').selectize({
+            persist: false,
+            maxItems: null,
+            valueField: '_id',
+            labelField: 'name',
+            searchField: ['rank','name', 'squad'],
+            options: opts,
+            render: {
+                item: function(item, escape) {
+                    return '<div>' +
+                        (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
+                        (item.squad ? '<span class="squad">' + escape(item.squad) + '</span>' : '') +
+                    '</div>';
+                },
+                option: function(item, escape) {
+                    var label = item.name || item.squad;
+                    var caption = item.name ? item.squad : null;
+                    return '<div>' +
+                        '<span class="label">' + escape(label) + '</span>' +
+                        (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+                    '</div>';
+                },
+            },
+        });
+
+		$('#start_date').change(()=>{
+			$('#end_date').attr('min',$('#start_date').val());
+		});
+		$('#end_date').change(()=>{
+			$('#start_date').attr('max',$('#end_date').val());
+		});
+		$('#new-activity-form').submit( async (e)=>{
+			e.preventDefault();
+			
+			const start_date = $('#start_date').val();
+			const end_date = $('#end_date').val();
+			const activity_name = $('#activity_name').val();
+
+			try{
+				const res = await fetch('/admin/activities/new',{
+					method: 'POST',
+					body: JSON.stringify({start_date,end_date,activity_name}),
+                    headers: {'Content-Type':'application/json'}
+				});
+
+				const data = await res.json();
+
+				if(data.errors){
+					
+				}
+				console.log(data);
+				if(data.activity){
+					Swal.fire({
+						title: 'Create Successfully',
+						text : '"'+data.activity.name+'" has been created successfully',
+						icon : 'success'
+					}).then(()=>{location.assign('/admin/activities/'+data.activity._id);});
+				}
+			} catch(err){}
+		});
+	})
+</script>

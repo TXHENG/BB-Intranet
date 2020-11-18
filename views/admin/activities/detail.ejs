@@ -7,7 +7,7 @@
                 <p class="text-muted">from <b><%= moment(activity.startDate).format('DD-MM-YYYY') %></b> to <b><%= moment(activity.endDate).format('DD-MM-YYYY') %></b> [<%= moment(activity.endDate).diff(moment(activity.startDate),"days")+1 %>]day(s)</p>
             </div>
             <div class="pull-right">
-                <button class="btn btn-primary"><i class="fa fa-plus"></i>Add Member</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#add-member-modal"><i class="fa fa-plus"></i>Add Member</button>
             </div>
         </div>
         <div class="content-body">
@@ -31,4 +31,5 @@
         });
     });
 </script>
+<%- include('./add-member-modal.ejs') %> 
 <%- include('../partials/footer.ejs') -%>

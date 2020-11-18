@@ -25,6 +25,7 @@ router.get('/activities/list-row-json',requireAdminAuth,ActivityController.list_
 router.post('/activities/new',requireAdminAuth,ActivityController.new);
 router.get('/activities/detail-list-col-json',requireAdminAuth,ActivityController.detail_col);
 router.get('/activities/:id/detail-list-row-json',requireAdminAuth,ActivityController.detail_row);
+router.get('/activities/:id/members',requireAdminAuth,ActivityController.members);
 router.get('/activities/:id',requireAdminAuth,ActivityController.detail);
 router.post('/activities/:id/delete',requireAdminAuth,ActivityController.delete);
 router.get('/activities/:id/info',requireAdminAuth,ActivityController.info);

@@ -111,7 +111,6 @@ module.exports.edit = async (req,res)=>{
     }
 }
 
-
 module.exports.detail_col = async (req,res)=>{
     const col = [
         {name:"rank",   title:"Rank",   filterable:true, sortable:true, type:"text"},
@@ -140,4 +139,11 @@ module.exports.detail_row = async (req,res)=>{
         });
     });
     res.json(result);
+}
+
+module.exports.members = async (req,res)=>{
+    const activity_id = req.params.id;
+
+    const activity = await Activity.findById(activity_id);
+    res.json(await User.find({_id:{$nin:activity.members}},{password:0,badges:0,email:0}));
 }

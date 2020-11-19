@@ -124,26 +124,55 @@ module.exports.detail_row = async (req,res)=>{
     const id = req.params.id;
     let result = [];
     const activity = await Activity.findById(id);
-    const users = await User.find({
-        _id:{$in:activity.members}
-    });
-    users.forEach(user => {
-        result.push({
-            rank:rank[user.rank],
-            name:user.name,
-            squad: 0,
-            action: 
-            '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/activities/" target="_blank"><i class="fa fa-search"></i></a>'+
-            '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-edit-id=""><i class="fa fa-pen"></i></button>'+
-            '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id=""><i class="far fa-trash-alt"></i></button></div>'
+    
+    if(activity.members!=""){
+        const users = await User.find({
+            _id:{$in:activity.members}
         });
-    });
+        users.forEach(user => {
+            result.push({
+                rank:user.rank,
+                name:user.name,
+                squad: 0,
+                action: 
+                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/activities/" target="_blank"><i class="fa fa-search"></i></a>'+
+                '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-edit-id=""><i class="fa fa-pen"></i></button>'+
+                '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id=""><i class="far fa-trash-alt"></i></button></div>'
+            });
+        });
+    }
     res.json(result);
 }
 
 module.exports.members = async (req,res)=>{
     const activity_id = req.params.id;
-
+    let users = {};
     const activity = await Activity.findById(activity_id);
-    res.json(await User.find({_id:{$nin:activity.members}},{password:0,badges:0,email:0}));
+    if(activity.members != ""){
+        users = await User.find(
+            {_id:{$nin:activity.members}},
+            {password:0,badges:0,email:0});
+    } else{
+        users = await User.find(
+            {},
+            {password:0,badges:0,email:0});
+    }
+    res.json(users);
+}
+
+module.exports.add_members = async (req,res)=>{
+    const activity_id = req.params.id;
+    const {members_ids} = req.body;
+    console.log(members_ids);
+
+    try{
+        let result = await Activity.findByIdAndUpdate( activity_id,
+            { $addToSet : { members : { $each : members_ids }}}
+        ).then(()=>{
+            res.json({success:'success'});
+        });
+    } catch (err){
+        console.log(err);
+        res.json({errors:'fail'});
+    }    
 }

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - BB Intranet</title>
+    <%- include('../styles.ejs') -%>
+    <%- include('../scripts.ejs') -%>
+    <style>
+        #pwPattern, #conPw, #emailError{
+            font-size: 12px;
+        }
+        .user_card {
+            height: auto;
+            width: 350px;
+            margin-top: auto;
+            margin-bottom: auto;
+            background: var(--myorange);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 10px;
+            padding-bottom: 30px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 5px;
+        }
+
+        .brand_logo_container {
+            position: absolute;
+            height: 170px;
+            width: 170px;
+            top: -75px;
+            border-radius: 50%;
+            background: var(--mylightblue);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .brand_logo {
+            padding: 20px;
+            height: 150px;
+            border-radius: 50%;
+        }
+
+        .form_container {
+            margin-top: 20px;
+        }
+
+        .login_btn {
+            width: 100%;
+            background: var(--myred) !important;
+            color: white !important;
+        }
+
+        .login_btn:focus {
+            box-shadow: none !important;
+            outline: 0px !important;
+        }
+
+        .login_container {
+            padding: 0 2rem;
+        }
+
+        .input-group-text {
+            background: var(--myred) !important;
+            color: white !important;
+            border: 0 !important;
+            border-radius: 0.25rem 0 0 0.25rem !important;
+        }
+
+        .input_user,
+        .input_pass:focus {
+            box-shadow: none !important;
+            outline: 0px !important;
+        }
+
+        .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+            background-color: var(--myred) !important;
+        }
+    </style>
+</head>
+
+<body class="h-100">
+    <nav class="navbar fixed-top navbar-light bg-dark">
+        <img src="/resources/img/logo.png" alt="BB Intranet" id="logo" style="height: 50px;" class="float-right">
+        <div>
+            <a class="pointer text-light btn btn-success" href="/admin/sign-in">Sign In</a> <a class="pointer text-light btn btn-primary active" href="#">Sign Up</a>
+        </div>
+    </nav>
+    <div class="container h-100">
+        <div class="d-flex justify-content-center h-100">
+            <div class="user_card">
+                <div class="d-flex justify-content-center form_container">
+                    <form method="POST" action="" id="register-form">
+                        <h3 class="text-center">Admin Site</h3>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="name" class="form-control input_user" value="" placeholder="Name" required>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-at"></i></span>
+                            </div>
+                            <input type="email" name="email" class="form-control input_email" value="" placeholder="Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                        </div>
+                        <div class="mb-3 text-center" id="emailError" class="text-danger"></div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                            </div>
+                            <select name="gender" id="gender" class="form-control" required>
+                                <option value="">== Select Gender ==</option>
+                                <option value="m">Male</option> 
+                                <option value="f">Female</option> 
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="password" class="form-control input_pass" value=""
+                                placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                required title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                        </div>
+                        <div class="mb-3 text-center" id="pwPattern"></div>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="confirm_password" class="form-control input_pass" value=""
+                                placeholder="Confirm Password"
+                                required>
+                        </div>
+                        <div class="mb-3 text-center" id="conPw"></div>
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <button type="submit" name="button" class="btn login_btn">Sign Up</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="mt-4">
+                    <div class="d-flex justify-content-center links">
+                        Already have an account? <a href="/admin/sign-in" class="ml-2">Sign In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function(){
+        $("[name='password']").keyup(function(){
+            var value = $("[name='password']").val();
+            var field = $('#pwPattern');
+
+            if(value == ""){
+                field.css('color','red');
+                field.text('This field is required.');
+            } else if(value.length < 8){
+                field.css('color','red');
+                field.text('Password must be at least 8 characters.');
+            } else if(value == value.toUpperCase()){
+                field.css('color','red');
+                field.text('Password must contain at least 1 lowercase.');
+            } else if(value == value.toLowerCase()){
+                field.css('color','red');
+                field.text('Password must contain at least 1 uppercase.');
+            } else {
+                field.css('color','green');
+                field.text("Okay!");
+            }
+            
+            if(value == $("[name='confirm_password']").val()){
+                var field2 = $('#conPw');
+                field2.css('color','green');
+                field2.text("Okay!");
+            }
+        });
+        $("[name='confirm_password']").keyup(function(){
+            var pw = $("[name='password']").val();
+            var value = $("[name='confirm_password']").val();
+            var field = $('#conPw');
+            if(value == ""){
+                field.css('color','red');
+                field.text('This field is required.');
+            }
+            else if(value != pw){
+                field.css('color','red');
+                field.text("Password and confirm password are different");
+            } else {
+                field.css('color','green');
+                field.text("Okay!");
+            }
+        });
+        $("#register-form").submit(async (e)=>{
+            e.preventDefault();
+            $("#pwPattern").text("");
+            $("#emailError").text("");
+            if($("[name='password']").val() != $("[name='confirm_password']").val()){
+                Swal.fire({
+                    title: 'Oops...',
+                    icon:  'error',
+                    text:  'Password and confirm password you entered are different',
+                });
+            } else {
+                const name = $("[name='name']").val();
+                const email = $("[name='email']").val();
+                const rank = $("[name='rank']").val();
+                const gender = $("[name='gender']").val();
+                const password = $("[name='password']").val();
+                try{
+                    const res = await fetch('/admin/sign-up',{
+                        method:'POST',
+                        body: JSON.stringify({name,email,gender,password}),
+                        headers: {'Content-Type':'application/json'}
+                    });
+                    const data = await res.json();
+                    if(data.errors){
+                        $("#emailError").css('color','red');
+                        $("#emailError").text(data.errors.email);
+                        $("#pwPattern").css('color','red');
+                        $("#pwPattern").text(data.errors.password);
+                    }
+                    if(data.admin){
+                        Swal.fire({
+                            title: 'Register Successfully',
+                            text : 'Your account has been registered successfully',
+                            icon : 'success'
+                        }).then(()=>{location.assign('/admin/sign-in');});
+                    }
+                }
+                catch(err){}
+            }
+        });
+    });
+</script>

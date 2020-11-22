@@ -1,0 +1,65 @@
+<%- include('../partials/header.ejs') -%>
+<section>
+    <div class="content-wrapper">
+        <div class="content-heading border-bottom row">
+            <div class="col">
+                <h1><%= activity.name %></h1>
+                <p class="text-muted">from <b><%= moment(activity.startDate).format('DD-MM-YYYY') %></b> to <b><%= moment(activity.endDate).format('DD-MM-YYYY') %></b> [<%= moment(activity.endDate).diff(moment(activity.startDate),"days")+1 %>]day(s)</p>
+            </div>
+            <div class="pull-right">
+                <button class="btn btn-primary" data-ajax-modal="/admin/activities/<%= activity._id %>/add-members" ><i class="fa fa-plus"></i>Add Member</button>
+            </div>
+        </div>
+        <div class="content-body">
+            <table class="table" id="member-list" data-filtering="true" data-sorting="true" data-paging="true" data-paging-count-format="{CP} of {TP} (total {TR} records)" data-filter-position="right">
+            </table>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function(){
+        $('#member-list').footable({
+            columns: $.get('/admin/activities/detail-list-col-json'),
+            rows: $.get('/admin/activities/<%= id  %>/detail-list-row-json'),
+            paging:{
+                size:15,
+            },
+            components:{
+                filtering: FooTable.MyFiltering
+            }
+        },function(){
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('[data-delete-id]').click(async function(){
+                let this_row = $(this);
+                const id = $(this).attr("data-delete-id");
+                const url = '/admin/activities/<%= id %>/'+id+'/remove-member';
+                try{
+                    const res = await fetch(url,{
+                        method:'POST',
+                        body: JSON.stringify(),
+                        headers: {'Content-Type':'application/json'}
+                    });
+                    const data = await res.json();
+                    console.log(data);
+                    if(data.errors){
+                        new Noty({
+                            type: 'error',
+                            text: 'Error occur when removing member from this activity'
+                        }).show();
+                    } else if (data.name) {
+                        new Noty({
+                            type: 'success',
+                            text: data.name+' has been remove from this activity'
+                        }).show();
+                        this_row.closest('tr').remove();
+                    }
+                }
+                catch(err){}
+            });
+
+        });
+    });
+</script>
+<%- include('../partials/footer.ejs') -%>

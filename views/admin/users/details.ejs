@@ -1,0 +1,33 @@
+<%- include('../partials/header.ejs') -%>
+<section>
+        <div class="card card-default">
+            <div class="card-header">
+                <h3>Member Details</h3>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <td>:</td>
+                        <td><%= member.name %></td>
+                    </tr>
+                    <tr>
+                        <th>Rank</th>
+                        <td>:</td>
+                        <td><%= member.rank %></td>
+                    </tr>
+                    <tr>
+                        <th>Squad</th>
+                        <td>:</td>
+                        <td><%= member.squad %></td>
+                    </tr>
+                    <tr>
+                        <th>Badges</th>
+                        <td>:</td>
+                        <td><%= member.badges %></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+</section>
+<%- include('../partials/footer.ejs') -%>

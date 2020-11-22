@@ -1,0 +1,24 @@
+<%- include('../partials/header.ejs') -%>
+<section>
+    <h1 class="border-bottom">Member List</h1>
+    <table class="table" id="member-list" data-filtering="true" data-sorting="true" data-paging="true" data-paging-count-format="{CP} of {TP} (total {TR} records)" data-filter-position="right">
+        
+    </table>
+</section>
+<script>
+    $(document).ready(function(){
+        $('#member-list').footable({
+            columns: $.get('/admin/members/col-json'),
+            rows: $.get('/admin/members/row-json'),
+            paging:{
+                size:15,
+            },
+            components:{
+                filtering: FooTable.MyFiltering
+            }
+        },()=>{
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    });
+</script>
+<%- include('../partials/footer.ejs') -%>

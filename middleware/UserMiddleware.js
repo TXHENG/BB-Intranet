@@ -1,19 +1,29 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+const validToken = (token) => {
+    var flag = false;
+    jwt.verify(token,'txhengCreateBBIntranet',(err,decodedToken)=>{
+        if(err){ // invalid token
+            console.log(err.message);
+            flag = false;       
+        } else {
+            console.log(decodedToken);
+            flag = true;
+        }
+    });
+    return flag;
+}
+
 const requireAuth = (req,res,next) => {
     const token = req.cookies.jwt;
     if(token){
         // token exist, verify now
-        jwt.verify(token,'txhengCreateBBIntranet',(err,decodedToken)=>{
-            if(err){ // invalid token
-                console.log(err.message);
-                res.redirect('/sign-in');        
-            } else {
-                console.log(decodedToken);
-                next();
-            }
-        });
+        if(validToken(token)){
+            next();
+        } else {
+            res.redirect('/sign-in');
+        }
     } else {
         // no token
         res.redirect('/sign-in');

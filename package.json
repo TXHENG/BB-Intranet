@@ -22,6 +22,8 @@
     "moment": "^2.29.1",
     "mongoose": "^5.10.13",
     "morgan": "^1.10.0",
+    "noty": "^3.2.0-beta",
+    "selectize": "^0.12.6",
     "sweetalert2": "^10.9.0",
     "validator": "^13.1.17"
   }

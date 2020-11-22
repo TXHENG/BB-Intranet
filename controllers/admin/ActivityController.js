@@ -16,6 +16,7 @@ module.exports.list_col_json = async (req,res)=>{
         {name:"startDate",      title:"Start Date",     "filterable":true, "sortable":true, type:"date"},
         {name:"endDate",        title:"End Date",       "filterable":true, "sortable":true, type:"date","breakpoints":"xs sm"},
         {name:"duration",       title:"Duration(Days)", "filterable":true, "sortable":true, type:"number","breakpoints":"xs sm"},
+        {name:"participants",    title:"Participants",   "filterable":false,"sortable":true, type:"number","breakpoints":"xs sm"},
         {name:"action",         title:"Actions",        "filterable":false,"sortable":false,type:"text","breakpoints":"xs sm",},
     ]);
 };
@@ -32,7 +33,8 @@ module.exports.list_row_json = async (req,res)=>{
             activityName:activity.name,
             startDate   :moment(activity.startDate).format('DD-MMM-YYYY'),
             endDate     :moment(activity.endDate).format('DD-MMM-YYYY'),
-            duration    :moment(activity.endDate).diff(moment(activity.startDate),'days')+1,
+            duration    :moment(activity.endDate).diff(moment(activity.startDate),'days') + 1,
+            participants:(activity.members).length ,
             action      :
                 '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/activities/'+ activity._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
                 '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-edit-id="'+activity._id+'"><i class="fa fa-pen"></i></button>'+
@@ -133,11 +135,10 @@ module.exports.detail_row = async (req,res)=>{
             result.push({
                 rank:user.rank,
                 name:user.name,
-                squad: 0,
+                squad:user.squad,
                 action: 
                 '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/activities/" target="_blank"><i class="fa fa-search"></i></a>'+
-                '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-edit-id=""><i class="fa fa-pen"></i></button>'+
-                '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id=""><i class="far fa-trash-alt"></i></button></div>'
+                '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id="'+ user._id +'"><i class="far fa-trash-alt"></i></button></div>'
             });
         });
     }

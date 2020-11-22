@@ -36,7 +36,7 @@ const UserSchema = new Schema({
         required: true,
     },
     squad:  {
-        type: Array
+        type: String
     },
     badges: [Badge.schema],
 });

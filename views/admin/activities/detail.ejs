@@ -28,6 +28,49 @@
             components:{
                 filtering: FooTable.MyFiltering
             }
+        },function(){
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('[data-delete-id]').click(function(){
+                const id = $(this).attr("data-delete-id");
+                Swal.fire({
+                    title: "Are you sure",
+                    text: "Do you want to delete this activity permanently?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: 'Delete',
+                    cancelButtonText: 'Cancel',
+                }).then(async(result)=>{
+                    if(result.isConfirmed){
+                        const url = '/admin/activities/'+id+'/delete';
+                        try{
+                            const res = await fetch(url,{
+                                method:'POST',
+                                body: JSON.stringify(),
+                                headers: {'Content-Type':'application/json'}
+                            });
+                            const data = await res.json();
+                            console.log(data);
+                            if(data.errors){
+                                Swal.fire({
+                                    title: 'Error',
+                                    text : data.errors,
+                                    icon : 'error'
+                                });
+                            } else if (data.name) {
+                                Swal.fire({
+                                    title: 'Successfully',
+                                    text : 'Activity "'+data.name+'" has been deleted successfully',
+                                    icon : 'success'
+                                }).then(()=>{location.reload();});
+                            }
+                        }
+                        catch(err){}
+                    }
+                })
+            });
+
         });
     });
 </script>

@@ -19,7 +19,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-success">Create</button>
+					<button type="submit" class="btn btn-success">Add</button>
 					<button type="reset" class="btn btn-info">Reset</button>
 				</div>
 			</form>
@@ -27,9 +27,8 @@
 	</div>
 </div>
 <script>
-    const ranks = "<%= ranks %>".split(',');
 	$(document).ready( async function(){
-        const opts = await $.get('/admin/activities/<%= id %>/members');
+        const opts = await $.get('/admin/activities/<%= activity_id %>/members');
         console.log(opts);
         $('#member_id').selectize({
             persist: false,
@@ -72,7 +71,7 @@
 			e.preventDefault();
 			const members_ids = $('[name="member_id[]"]').val();
 			try{
-				const res = await fetch('/admin/activities/<%= id %>/add-members',{
+				const res = await fetch('/admin/activities/<%= activity_id %>/add-members',{
 					method: 'POST',
 					body: JSON.stringify({members_ids}),
                     headers: {'Content-Type':'application/json'}
@@ -89,7 +88,7 @@
 						title: 'Add Successfully',
 						text : 'Members has been added successfully',
 						icon : 'success'
-					}).then(()=>{location.assign('/admin/activities/<%= id %>');});
+					}).then(()=>{location.assign('/admin/activities/<%= activity_id %>');});
 				}
 			} catch(err){}
 		});

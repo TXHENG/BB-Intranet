@@ -37,7 +37,7 @@ module.exports.list_row_json = async (req,res)=>{
             participants:(activity.members).length ,
             action      :
                 '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/activities/'+ activity._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
-                '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-edit-id="'+activity._id+'"><i class="fa fa-pen"></i></button>'+
+                '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-ajax-modal="/admin/activities/'+activity._id+'/edit"><i class="fa fa-pen"></i></button>'+
                 '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id="'+activity._id+'"><i class="far fa-trash-alt"></i></button></div>'
         }); 
     });
@@ -55,18 +55,21 @@ module.exports.info = async (req,res)=>{
 }
 
 module.exports.new = async (req,res)=>{
-    const {activity_name, start_date, end_date} = req.body;
-    try{
-        const activity = await Activity.create({
-            name: activity_name,
-            startDate: start_date,
-            endDate: end_date,
-        });
-        res.status(201).json({activity});
-    } catch (err) {
-        const errors = handleErrors(err);
-        res.status(400).json({errors});
+    if(req.method == 'POST'){
+        const {activity_name, start_date, end_date} = req.body;
+        try{
+            const activity = await Activity.create({
+                name: activity_name,
+                startDate: start_date,
+                endDate: end_date,
+            });
+            res.status(201).json({activity});
+        } catch (err) {
+            const errors = handleErrors(err);
+            res.status(400).json({errors});
+        }
     }
+    res.render('admin/activities/new-modal');
 }
 
 module.exports.detail = async (req,res)=>{
@@ -99,28 +102,32 @@ module.exports.delete = async (req,res)=>{
 
 module.exports.edit = async (req,res)=>{
     const id = req.params.id;
-    const {activity_name, start_date, end_date} = req.body;
-    try{
-        const activity = await Activity.findById(id);
-        if(activity){
-            const data = await Activity.findByIdAndUpdate(id,{name:activity_name,startDate:start_date,endDate:end_date});
-            console.log(data);
-            res.status(201).json({activity:data});
+    let data = [];
+    if(req.method == 'POST'){
+        const {activity_name, start_date, end_date} = req.body;
+        try{
+            const activity = await Activity.findById(id);
+            if(activity){
+                const data = await Activity.findByIdAndUpdate(id,{name:activity_name,startDate:start_date,endDate:end_date});
+                console.log(data);
+                res.status(201).json({activity:data});
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(400).json({errors: "Activity id not found, please try again"});
         }
-    } catch (err) {
-        console.log(err);
-        res.status(400).json({errors: "Activity id not found, please try again"});
     }
+    data['activity'] = await Activity.findById(id);
+    res.render('admin/activities/edit-modal',data);
 }
 
 module.exports.detail_col = async (req,res)=>{
-    const col = [
+    res.json([
         {name:"rank",   title:"Rank",   filterable:true, sortable:true, type:"text"},
         {name:"name",   title:"Name",   filterable:true, sortable:true, type:"text"},
         {name:"squad",  title:"Squad",  filterable:true, sortable:true, type:"text",breakpoints:"xs sm"},
         {name:"action", title:"Actions",filterable:false,sortable:false,type:"text",breakpoints:"xs sm"}
-    ]
-    res.json(col);
+    ]);
 }
 module.exports.detail_row = async (req,res)=>{
     const id = req.params.id;
@@ -137,7 +144,7 @@ module.exports.detail_row = async (req,res)=>{
                 name:user.name,
                 squad:user.squad,
                 action: 
-                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/activities/" target="_blank"><i class="fa fa-search"></i></a>'+
+                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/members/'+ user._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
                 '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id="'+ user._id +'"><i class="far fa-trash-alt"></i></button></div>'
             });
         });
@@ -163,17 +170,37 @@ module.exports.members = async (req,res)=>{
 
 module.exports.add_members = async (req,res)=>{
     const activity_id = req.params.id;
-    const {members_ids} = req.body;
-    console.log(members_ids);
+    let data = [];
+    data['activity_id'] = activity_id;
+    if(req.method == 'POST'){
+        const {members_ids} = req.body;
+    
+        try{
+            let result = await Activity.findByIdAndUpdate( activity_id,
+                { $addToSet : { members : { $each : members_ids }}}
+            ).then(()=>{
+                res.json({success:'success'});
+            });
+        } catch (err){
+            console.log(err);
+            res.json({errors:'fail'});
+        }    
+    }
+    res.render('admin/activities/add-member-modal',data);
+}
 
+module.exports.remove_members = async (req,res)=>{
+    const activity_id = req.params.id;
+    const member_id = req.params.member_id;
     try{
-        let result = await Activity.findByIdAndUpdate( activity_id,
-            { $addToSet : { members : { $each : members_ids }}}
-        ).then(()=>{
-            res.json({success:'success'});
-        });
-    } catch (err){
+        await Activity.update(
+            {_id:activity_id},
+            {$pull:{'members':member_id}}
+        );
+        const member = await (User.findById(member_id));
+        res.json({name:member.name});
+    }catch(err){
         console.log(err);
         res.json({errors:'fail'});
-    }    
+    }
 }

@@ -4,7 +4,7 @@
         <div class="content-heading border-bottom row">
             <h1 class="col">Activity List</h1>
             <div class="col-lg-2 col-md-2 mt-md-2 mt-lg-2 text-right">
-                <button class="btn btn-info" style="align-self: flex-end;" data-toggle="modal" data-target="#new-activity-modal">New activity</button>
+                <button class="btn btn-info" style="align-self: flex-end;" data-ajax-modal='/admin/activities/new'>New activity</button>
             </div>
             <select name="year" id="year" class="form-control col-lg-2 col-md-2 mt-md-2 mt-lg-2 mt-sm-2">
                 <%var selectedYear = locals.year ? year : moment().year() %>
@@ -19,8 +19,6 @@
             </table>
         </div>
     </div>
-    <%- include('./new-modal.ejs') -%>
-    <%- include('./edit-modal.ejs') -%>
 </section>
 <script>
     $(document).ready(async()=>{
@@ -43,32 +41,32 @@
 
             $('[data-toggle="tooltip"]').tooltip();
 
-            $('[data-edit-id]').click(async function(){
-                const id = $(this).data('edit-id');
-                const res = await fetch('/admin/activities/'+id+'/info',{
-                    method: 'get',
-                    body: JSON.stringify(),
-                    headers: {'Content-Type':'application/json'}
-                });
-                const data = await res.json();
-                console.log(data);
-                if(data.errors){
-                    Swal.fire({
-                        title: 'Error',
-                        text : data.errors,
-                        icon : 'error'
-                    });
-                } else if(data.activity){
-                    console.log(data.activity._id);
-                    $('#edit-activity-modal').find('#edit_activity_id').val(data.activity._id);
-                    $('#edit-activity-modal').find('#edit_activity_name').val(data.activity.name);
-                    $('#edit-activity-modal').find('#edit_start_date').val(moment(data.activity.startDate).format('YYYYY-MM-DD'));
-                    $('#edit-activity-modal').find('#edit_end_date').val(moment(data.activity.endDate).format('YYYYY-MM-DD'));
-                    $('#edit-activity-modal').find('#edit_start_date').attr('max',moment(data.activity.endDate).format('YYYYY-MM-DD'));
-                    $('#edit-activity-modal').find('#edit_end_date').attr('min',moment(data.activity.startDate).format('YYYYY-MM-DD'));
-                    $('#edit-activity-modal').modal();
-                }
-            });
+            // $('[data-edit-id]').click(async function(){
+            //     const id = $(this).data('edit-id');
+            //     const res = await fetch('/admin/activities/'+id+'/info',{
+            //         method: 'get',
+            //         body: JSON.stringify(),
+            //         headers: {'Content-Type':'application/json'}
+            //     });
+            //     const data = await res.json();
+            //     console.log(data);
+            //     if(data.errors){
+            //         Swal.fire({
+            //             title: 'Error',
+            //             text : data.errors,
+            //             icon : 'error'
+            //         });
+            //     } else if(data.activity){
+            //         console.log(data.activity._id);
+            //         $('#edit-activity-modal').find('#edit_activity_id').val(data.activity._id);
+            //         $('#edit-activity-modal').find('#edit_activity_name').val(data.activity.name);
+            //         $('#edit-activity-modal').find('#edit_start_date').val(moment(data.activity.startDate).format('YYYYY-MM-DD'));
+            //         $('#edit-activity-modal').find('#edit_end_date').val(moment(data.activity.endDate).format('YYYYY-MM-DD'));
+            //         $('#edit-activity-modal').find('#edit_start_date').attr('max',moment(data.activity.endDate).format('YYYYY-MM-DD'));
+            //         $('#edit-activity-modal').find('#edit_end_date').attr('min',moment(data.activity.startDate).format('YYYYY-MM-DD'));
+            //         $('#edit-activity-modal').modal();
+            //     }
+            // });
 
             $('[data-delete-id]').click(function(){
                 const id = $(this).attr("data-delete-id");

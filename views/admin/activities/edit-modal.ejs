@@ -13,18 +13,17 @@
 			</div>
 			<form role="form" id="edit-activity-form">
 				<div class="modal-body">
-                    <input type="hidden" name="edit_activity_id" id="edit_activity_id">
 					<div class="form-group">
 						<label for="edit_activity_name">Activity Name</label>
-						<input type="text" class="form-control datepicker" id="edit_activity_name" name="edit_activity_name" placeholder="Enter Activity Name" required>
+						<input type="text" class="form-control datepicker" id="edit_activity_name" name="edit_activity_name" placeholder="Enter Activity Name" required value="<%= activity.name %>">
 					</div>
 					<div class="form-group">
 						<label for="edit_start_date">Start Date</label>
-						<input type="date" class="form-control" id="edit_start_date" name="edit_start_date" required>
+						<input type="date" class="form-control" id="edit_start_date" name="edit_start_date" required value="<%= moment(activity.startDate).format('YYYY-MM-DD') %>">
 					</div>
 					<div class="form-group">
 						<label for="edit_end_date">End Date</label>
-						<input type="date" class="form-control" id="edit_end_date" name="edit_end_date" required>
+						<input type="date" class="form-control" id="edit_end_date" name="edit_end_date" required value="<%= moment(activity.endDate).format('YYYY-MM-DD') %>">
 					</div>	
 				</div>
 				<div class="modal-footer">
@@ -45,13 +44,12 @@
 		});
 		$('#edit-activity-form').submit( async function(e){
 			e.preventDefault();
-			const id = $('#edit_activity_id').val();
 			const start_date = $('#edit_start_date').val();
 			const end_date = $('#edit_end_date').val();
 			const activity_name = $('#edit_activity_name').val();
 
 			try{
-				const res = await fetch('/admin/activities/'+id+'/edit',{
+				const res = await fetch('/admin/activities/<%= activity._id %>/edit',{
 					method: 'POST',
 					body: JSON.stringify({start_date,end_date,activity_name}),
                     headers: {'Content-Type':'application/json'}
@@ -70,7 +68,7 @@
 				if(data.activity){
 					Swal.fire({
 						title: 'Modify Successfully',
-						text : '"'+data.activity.name+'" has been modified successfully',
+						text : '"<%= activity.name %>" has been modified successfully',
 						icon : 'success'
 					}).then(()=>{location.assign('/admin/activities');});
 				}

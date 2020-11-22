@@ -5,5 +5,25 @@
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 <script src="/node_modules/selectize/dist/js/standalone/selectize.min.js"></script>
+<script src="/node_modules/noty/lib/noty.min.js"></script>
 <script src="/node_modules/footable-bootstrap.latest/js/footable.js"></script>
 <script src="/node_modules/moment/moment.js"></script>
+<script>
+    Noty.overrideDefaults({
+        theme    : 'sunset',
+        closeWith: ['button'],
+        timeout: 2000,
+    });
+    $(document).on('click','[data-ajax-modal]',function(e){
+        const url = $(this).data('ajax-modal');
+        e.preventDefault();
+        $.ajax({
+            type:"GET",
+            url:url
+        }).done(function(result){
+            $('#modal-handler').html(result);
+            $('.modal').modal('show');
+        });
+    });
+</script>
+<div id="modal-handler"></div>

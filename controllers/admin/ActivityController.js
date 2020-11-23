@@ -5,8 +5,8 @@ const User = require("../../models/User");
 module.exports.list = async (req,res)=>{
     var data = [];
     data['path1'] = 'activities';
-    if(req.body.year)
-        data['year'] = req.body.year;
+    if(req.query.year)
+        data['year'] = req.query.year;
     res.render('admin/activities/list',data);
 }
 
@@ -23,8 +23,8 @@ module.exports.list_col_json = async (req,res)=>{
 
 module.exports.list_row_json = async (req,res)=>{
     let rows = [], activities = null;
-    if(req.body.year){
-        activities = await Activity.find({ "$expr": { "$eq": [{ "$year": "$startDate" }, req.body.year] } });
+    if(req.query.year){
+        activities = await Activity.find({ "$expr": { "$eq": [{ "$year": "$startDate" }, moment(req.query.year).year()] } });
     } else {
         activities = await Activity.find({ "$expr": { "$eq": [{ "$year": "$startDate" }, moment().year()] } });
     }

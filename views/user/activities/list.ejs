@@ -1,0 +1,40 @@
+<%- include('../partials/header.ejs') -%>
+<section>
+    <div class="content-wrapper">
+        <div class="content-heading border-bottom row">
+            <h1 class="col">Activity List</h1>
+            <select name="year" id="year" class="form-control col-lg-2 col-md-2 mt-md-2 mt-lg-2 mt-sm-2">
+                <%var selectedYear = locals.year ? year : moment().year() %>
+                <% for(var i = moment().year(); i >= 2019; i-- ) { %>
+                    <option value="<%= i %>" <%= i==selectedYear?"selected":"" %> ><%= i %></option>
+                <% } %> 
+            </select>
+        </div>
+        <div class="content-body">
+            <table class="table" id="activity-list" data-filtering="true" data-sorting="true" data-paging="true" data-paging-count-format="{CP} of {TP} (total {TR} records)" data-filter-position="right">
+                
+            </table>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function(){
+        $('#activity-list').footable({
+            columns: $.get('/activities/list-col'),
+            rows: $.get('/activities/list-row?year=<%= selectedYear %>'),
+            paging:{
+                size:15,
+            },
+            components:{
+                filtering: FooTable.MyFiltering
+            }
+        },()=>{
+            $('#year').change(function(){
+                if($(this).val().toString() != ""){
+                    location.replace('/activities?year='+$(this).val().toString());
+                }
+            });
+        });
+    });
+</script>
+<%- include('../partials/footer.ejs') -%>

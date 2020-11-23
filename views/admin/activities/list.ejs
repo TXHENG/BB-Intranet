@@ -9,7 +9,7 @@
             <select name="year" id="year" class="form-control col-lg-2 col-md-2 mt-md-2 mt-lg-2 mt-sm-2">
                 <%var selectedYear = locals.year ? year : moment().year() %>
                 <% for(var i = moment().year(); i >= 2020; i-- ) { %>
-                    <option value="<%= i %>" <%= i==moment().year()?"selected":"" %> ><%= i %></option>
+                    <option value="<%= i %>" <%= i==selectedYear?"selected":"" %> ><%= i %></option>
                 <% } %> 
             </select>
         </div>
@@ -40,33 +40,6 @@
             });
 
             $('[data-toggle="tooltip"]').tooltip();
-
-            // $('[data-edit-id]').click(async function(){
-            //     const id = $(this).data('edit-id');
-            //     const res = await fetch('/admin/activities/'+id+'/info',{
-            //         method: 'get',
-            //         body: JSON.stringify(),
-            //         headers: {'Content-Type':'application/json'}
-            //     });
-            //     const data = await res.json();
-            //     console.log(data);
-            //     if(data.errors){
-            //         Swal.fire({
-            //             title: 'Error',
-            //             text : data.errors,
-            //             icon : 'error'
-            //         });
-            //     } else if(data.activity){
-            //         console.log(data.activity._id);
-            //         $('#edit-activity-modal').find('#edit_activity_id').val(data.activity._id);
-            //         $('#edit-activity-modal').find('#edit_activity_name').val(data.activity.name);
-            //         $('#edit-activity-modal').find('#edit_start_date').val(moment(data.activity.startDate).format('YYYYY-MM-DD'));
-            //         $('#edit-activity-modal').find('#edit_end_date').val(moment(data.activity.endDate).format('YYYYY-MM-DD'));
-            //         $('#edit-activity-modal').find('#edit_start_date').attr('max',moment(data.activity.endDate).format('YYYYY-MM-DD'));
-            //         $('#edit-activity-modal').find('#edit_end_date').attr('min',moment(data.activity.startDate).format('YYYYY-MM-DD'));
-            //         $('#edit-activity-modal').modal();
-            //     }
-            // });
 
             $('[data-delete-id]').click(function(){
                 const id = $(this).attr("data-delete-id");

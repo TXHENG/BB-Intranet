@@ -34,6 +34,7 @@
             </div>
             <ul class="list-unstyled">
                 <li class="<%= (locals.path1)?(path1 === 'home' ? 'active' : ''):'' %>"><a href="/home"><i class="fas fa-home"></i> Home</a>
+                <li class="<%= (locals.path1)?(path1 === 'activities' ? 'active' : ''):'' %>"><a href="/activities"><i class="fa fa-cross"></i> Activities</a></li>
                 <li class="<%= (locals.path1)?(path1 === 'badges' ? 'active' : ''):'' %>"><a href="/badges"><i class="fas fa-certificate"></i> My Badge list</a></li>
                 <li class="<%= (locals.path1)?(path1 === 'something else' ? 'active' : ''):'' %>">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-home"></i> Home</a>

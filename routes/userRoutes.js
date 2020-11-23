@@ -1,5 +1,7 @@
+const express = require('express');
 const{ Router } = require('express');
 const UserController = require('../controllers/user/UserController');
+const ActivityController = require('../controllers/user/ActivityController');
 const { requireAuth, checkUser } = require('../middleware/UserMiddleware');
 const router = Router();
 
@@ -25,6 +27,12 @@ router.get('/badges',requireAuth,(req, res)=>{
     data['path1'] = 'badges';
     res.render('user/badges/badges-list',data);
 });
+
+const activityRoute = Router();
+router.use('/activities',requireAuth,activityRoute);
+activityRoute.get('/',ActivityController.list);
+activityRoute.get('/list-col',ActivityController.list_col);
+activityRoute.get('/list-row',ActivityController.list_row);
 
 router.get('/404',(req,res)=>{
     res.status(404).render('user/404');

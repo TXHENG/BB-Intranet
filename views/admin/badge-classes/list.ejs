@@ -1,0 +1,24 @@
+<%- include('../partials/header.ejs') -%>
+<section>
+    <h1 class="border-bottom">Badge List</h1>
+    <table class="table" id="badge-list" data-filtering="true" data-sorting="true" data-paging="true" data-paging-count-format="{CP} of {TP} (total {TR} records)" data-filter-position="right">
+        
+    </table>
+</section>
+<script>
+    $(document).ready(function(){
+        $('#badge-list').footable({
+            columns: $.get('/admin/badges-classes/col-json'),
+            rows: $.get('/admin/badges-classes/row-json'),
+            paging:{
+                size:15,
+            },
+            components:{
+                filtering: FooTable.MyFiltering
+            }
+        },()=>{
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    });
+</script>
+<%- include('../partials/footer.ejs') -%>

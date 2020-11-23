@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const BadgeSchema = new Schema({
     name: String,
-    basicDate: Date,
-    advanceDate: Date,
+    basicClassId: String,
+    advanceClassId: String,
 });
 
 const Badge = mongoose.model('badge',BadgeSchema);

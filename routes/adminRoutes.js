@@ -1,7 +1,8 @@
 const{ Router } = require('express');
 const AdminController = require('../controllers/admin/AdminController');
-const UserController = require('../controllers/admin/UserController');
 const ActivityController = require('../controllers/admin/ActivityController');
+const BadgeClassController = require('../controllers/admin/BadgeClassController');
+const UserController = require('../controllers/admin/UserController');
 const { requireAdminAuth, checkAdmin } = require('../middleware/AdminMiddleware');
 const router = Router();
 
@@ -41,6 +42,12 @@ activityRoute.post('/:id/delete',ActivityController.delete);
 activityRoute.get('/:id/info',ActivityController.info);
 activityRoute.get('/:id/edit',ActivityController.edit);
 activityRoute.post('/:id/edit',ActivityController.edit);
+
+const badgeRoute = Router();
+router.use('/badges-classes',requireAdminAuth,badgeRoute);
+badgeRoute.get('/',BadgeClassController.list);
+badgeRoute.get('/col-json',BadgeClassController.col_json);
+badgeRoute.get('/row-json',BadgeClassController.row_json);
 
 router.get('/404',(req,res)=>{
     res.status(404).render('admin/404');

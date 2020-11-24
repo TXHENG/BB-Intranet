@@ -20,39 +20,23 @@ module.exports.col_json = async (req,res)=>{
 };
 
 module.exports.row_json = async (req,res)=>{
-    let rows = [], awards = null;
-    if(req.query.year){
-		awards =  await Award.aggregate([
-			{ $addFields: { "objBadgeId" : { "$toObjectId" : "$badgeId" } } },
-			{ $lookup:
-				{
-					from: "badges",
-					localField: "objBadgeId",
-					foreignField: "_id",
-					as: 'badge'
-				}
-			},
-			{ $match: { $expr: { $eq: [{ "$year": "$classDate" }, moment(req.query.year).year()]}}},
-			{ $addFields: {'badge':{$arrayElemAt:["$badge",0]}}}
-		]);
-        // awards = await Award.find({ "$expr": { "$eq": [{ "$year": "$classDate" }, moment(req.query.year).year()] } });
-    } else {
-		awards =  await Award.aggregate([
-			{ $addFields: { "objBadgeId" : { "$toObjectId" : "$badgeId" } } },
-			{ $lookup:
-				{
-					from: "badges",
-					localField: "objBadgeId",
-					foreignField: "_id",
-					as: 'badge'
-				}
-			},
-			{ $match: { $expr: { $eq: [{ "$year": "$classDate" }, moment().year()]}}},
-			{ $addFields: {'badge':{$arrayElemAt:["$badge",0]}}}
-		]);
-        // awards = await Award.find({ "$expr": { "$eq": [{ "$year": "$classDate" }, moment().year()] } });
-	}
-	console.log(awards)
+	let rows = [];
+	let year = req.query.year ? moment(req.query.year).year() : moment().year();
+
+	let awards =  await Award.aggregate([
+		{ $addFields: { "objBadgeId" : { "$toObjectId" : "$badgeId" } } },
+		{ $lookup:
+			{
+				from: "badges",
+				localField: "objBadgeId",
+				foreignField: "_id",
+				as: 'badge'
+			}
+		},
+		{ $match: { $expr: { $eq: [{ "$year": "$classDate" }, year]}}},
+		{ $addFields: {'badge':{$arrayElemAt:["$badge",0]}}}
+	]);
+
     awards.forEach(award => {
         rows.push({
             awardName     :award.badge.name + ' Badge',

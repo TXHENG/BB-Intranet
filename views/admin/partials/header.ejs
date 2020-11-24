@@ -35,15 +35,15 @@
             <ul class="list-unstyled">
                 <li class="<%= (locals.path1)?(path1 === 'home' ? 'active' : ''):'' %>"><a href="/admin/home"><i class="fa fa-home"></i> Home</a>
                 <li class="<%= (locals.path1)?(path1 === 'members' ? 'active' : ''):'' %>"><a href="/admin/members"><i class="fa fa-users"></i> Members list</a></li>
-                <li class="<%= (locals.path1)?(path1 === 'badges-classes' ? 'active' : ''):'' %>"><a href="/admin/badges-classes"><i class="fa fa-certificate"></i> Badge list</a></li>
+                <li class="<%= (locals.path1)?(path1 === 'awards' ? 'active' : ''):'' %>"><a href="/admin/awards"><i class="fa fa-certificate"></i> Awards list</a></li>
                 <li class="<%= (locals.path1)?(path1 === 'activities' ? 'active' : ''):'' %>"><a href="/admin/activities"><i class="fa fa-cross"></i> Activities</a></li>
-                <li class="<%= (locals.path1)?(path1 === 'something else' ? 'active' : ''):'' %>">
+                <!-- <li class="<% (locals.path1)?(path1 === 'something else' ? 'active' : ''):'' %>">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-home"></i> Home</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
                         <li><a href="/">Home</a></li>
                         <li><a href="/">Home</a></li>
                     </ul>
-                </li>
+                </li> -->
                 <li><a href="/admin/sign-out"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>

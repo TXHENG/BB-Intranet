@@ -6,12 +6,12 @@ const membersList = new Schema({
     level: String
 })
 
-const BadgeClassSchema = new Schema({
-    name: String,
+const AwardSchema = new Schema({
+    badgeId: String,
     classDate: Date,
     members: [membersList]
 });
 
-const BadgeClass = mongoose.model('badge_class',BadgeClassSchema);
+const Award = mongoose.model('award',AwardSchema);
 
-module.exports = BadgeClass;
+module.exports = Award;

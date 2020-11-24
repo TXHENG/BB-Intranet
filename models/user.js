@@ -4,7 +4,11 @@ const bcrypt  = require('bcrypt');
 
 const Schema = mongoose.Schema;
 
-const Badge = require('./Badge.js');
+const BadgeSchema = new Schema({
+    badgeId: String,
+    basicClassId: String,
+    advanceClassId: String,
+});
 
 const UserSchema = new Schema({
     name: {
@@ -38,7 +42,7 @@ const UserSchema = new Schema({
     squad:  {
         type: String
     },
-    badges: [Badge.schema],
+    badges: [BadgeSchema],
 });
 
 // hash password before save

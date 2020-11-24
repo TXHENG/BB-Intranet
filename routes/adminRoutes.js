@@ -1,9 +1,11 @@
 const{ Router } = require('express');
 const AdminController = require('../controllers/admin/AdminController');
 const ActivityController = require('../controllers/admin/ActivityController');
-const BadgeClassController = require('../controllers/admin/BadgeClassController');
+const AwardController = require('../controllers/admin/AwardController');
+const BadgeController = require('../controllers/admin/BadgeController');
 const UserController = require('../controllers/admin/UserController');
 const { requireAdminAuth, checkAdmin } = require('../middleware/AdminMiddleware');
+// const Badge = require('../models/Badge');
 const router = Router();
 
 router.get('/sign-in',AdminController.signin_get);
@@ -43,18 +45,82 @@ activityRoute.get('/:id/info',ActivityController.info);
 activityRoute.get('/:id/edit',ActivityController.edit);
 activityRoute.post('/:id/edit',ActivityController.edit);
 
+const awardRoute = Router();
+router.use('/awards',requireAdminAuth,awardRoute);
+awardRoute.get('/',AwardController.list);
+awardRoute.get('/col-json',AwardController.col_json);
+awardRoute.get('/row-json',AwardController.row_json);
+awardRoute.get('/new',AwardController.new);
+awardRoute.post('/new',AwardController.new);
+
 const badgeRoute = Router();
-router.use('/badges-classes',requireAdminAuth,badgeRoute);
-badgeRoute.get('/',BadgeClassController.list);
-badgeRoute.get('/col-json',BadgeClassController.col_json);
-badgeRoute.get('/row-json',BadgeClassController.row_json);
+router.use('/badges',requireAdminAuth,badgeRoute);
+badgeRoute.get('/groupNames',BadgeController.group_names);
+badgeRoute.get('/badges',BadgeController.badges);
 
 router.get('/404',(req,res)=>{
     res.status(404).render('admin/404');
 });
 
 router.use((req,res)=>{
-    res.redirect('/admin/404');
+	res.redirect('/admin/404');
 });
 
 module.exports = router;
+
+// router.get('/badge-init',requireAdminAuth,async (req,res)=>{
+//     var badges = [
+//         {name: 'Target',                                groupName: 'Compulsory' },
+//         {name: 'Cristian Education',                    groupName: 'Compulsory' },
+//         {name: 'Drill',                                 groupName: 'Compulsory' },
+//         {name: 'Recruitment',                           groupName: 'Compulsory' },
+
+//         {name: 'Arts',                      group: 'A', groupName: 'Interest' },
+//         {name: 'Crafts',                    group: 'A', groupName: 'Interest' },
+//         {name: 'Hobbies',                   group: 'A', groupName: 'Interest' },
+//         {name: 'Bandsman\'s',               group: 'A', groupName: 'Interest' },
+//         {name: 'Bugler\'s',                 group: 'A', groupName: 'Interest' },
+//         {name: 'Drummer\'s',                group: 'A', groupName: 'Interest' },
+//         {name: 'Piper\'s',                  group: 'A', groupName: 'Interest' },
+//         {name: 'Communication',             group: 'A', groupName: 'Interest' },
+//         {name: 'Computer Knowledge',        group: 'A', groupName: 'Interest' },
+//         {name: 'International Relations',   group: 'A', groupName: 'Interest' },
+//         {name: 'Naturalist\'s',             group: 'A', groupName: 'Interest' },
+
+//         {name: 'Camper\'s',                 group: 'B', groupName: 'Adventure' },
+//         {name: 'Expedition',                group: 'B', groupName: 'Adventure' },
+//         {name: 'Water Adventure',           group: 'B', groupName: 'Adventure' },
+
+//         {name: 'Citizenship',               group: 'C', groupName: 'Community' },
+//         {name: 'Community Service',         group: 'C', groupName: 'Community' },
+//         {name: 'Environmental Conservation',group: 'C', groupName: 'Community' },
+//         {name: 'Fireman',                   group: 'C', groupName: 'Community' },
+//         {name: 'First Aid',                 group: 'C', groupName: 'Community' },
+//         {name: 'Life Saving',               group: 'C', groupName: 'Community' },
+//         {name: 'Safety',                    group: 'C', groupName: 'Community' },
+
+//         {name: 'Athletics',                 group: 'D', groupName: 'Physical' },
+//         {name: 'Gymnastics',                group: 'D', groupName: 'Physical' },
+//         {name: 'Martial Art',               group: 'D', groupName: 'Physical' },
+//         {name: 'Physical Training',         group: 'D', groupName: 'Physical' },
+//         {name: 'Sportsman\'s',              group: 'D', groupName: 'Physical' },
+//         {name: 'Swimming',                  group: 'D', groupName: 'Physical' },
+		
+//         {name: 'Gold',                                  groupName: 'Scholastic' },
+//         {name: 'Silver',                                groupName: 'Scholastic' },
+//         {name: 'Bronze',								groupName: 'Scholastic' },
+
+//         {name: 'One Year',								groupName: 'Service' },
+//         {name: 'Three Year',							groupName: 'Service' },
+//         {name: 'Long Year',								groupName: 'Service' },
+
+//         {name: 'President\'s',							groupName: 'Special' },
+//         {name: 'Founder\'s',							groupName: 'Special' },
+//         {name: 'NCO Proficiency',						groupName: 'Special' },
+//         {name: 'Cross Of Heroism',						groupName: 'Special' },
+//         {name: 'Diploma for Gallant Conduct',			groupName: 'Special' },
+//         {name: 'Gold Award',							groupName: 'Special' },
+//     ];
+//     // await Badge.insertMany(badges);
+//     res.send('complete');
+// });

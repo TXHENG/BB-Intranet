@@ -1,0 +1,98 @@
+<style>
+	.w-33{
+		width: 33%;
+	}
+	.selectize-dropdown-content{
+		max-height: 350px;
+	}
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="new-award-modal" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="font-weight-bold text-dark">
+					New Activity
+				</h4>
+				<button type="button" class="close" data-dismiss="modal">
+					&times;
+				</button>
+			</div>
+			<form role="form" id="new-award-form">
+				<div class="modal-body">
+					<div class="form-group">
+                        <label for="badge_id">Badge</label>
+                        <select name="badge_id" id="badge_id" required placeholder="== Select Badge =="></select>
+					</div>
+					<div class="form-group">
+						<label for="class_date">Class Date</label>
+						<input type="date" class="form-control" id="class_date" name="class_date" required>
+					</div>	
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success">Create</button>
+					<button type="reset" class="btn btn-info">Reset</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(async()=>{
+
+		$('#badge_id').selectize({
+			maxItems: 1,
+			options: await $.get('/admin/badges/badges'),
+			optgroups: await $.get('/admin/badges/groupNames'),
+			optgroupField: 'groupName',
+			optgroupLabelField: 'groupName',
+			optgroupValueField: 'groupName',
+			valueField: '_id',
+			labelField: 'name',
+			searchField: ['name','group','groupName'],
+			render: {
+                item: function(item, escape) {
+                    return '<div>'+escape(item.name)+'</div>';
+                },
+                option: function(item, escape) {
+                    var name = item.name;
+                    return '<div class="w-33 h-100 p-2 d-inline-block">'+escape(name)+'</div>';
+				},
+				optgroup_header: function(data, escape) {
+					return '<div class="optgroup-header bg-danger text-light font-weight-bold text-center">' + escape(data.groupName) + '</div>';
+				}
+            },
+		});
+
+		$('#new-award-form').submit( async (e)=>{
+			e.preventDefault();
+			
+			const badge_id = $('#badge_id').val();
+			const class_date = $('#class_date').val();
+
+			try{
+				const res = await fetch('/admin/awards/new',{
+					method: 'POST',
+					body: JSON.stringify({class_date,badge_id}),
+                    headers: {'Content-Type':'application/json'}
+				});
+
+				const data = await res.json();
+
+				if(data.errors){
+					
+				}
+				console.log(data);
+				if(data.award){
+					Swal.fire({
+						title: 'Create Successfully',
+						text : 'New award has been created successfully',
+						icon : 'success'
+					}).then(()=>{location.assign('/admin/awards/'+data.award._id);});
+				}
+			} catch(err){}
+		});
+	})
+</script>

@@ -25,7 +25,9 @@ const AdminRoutes = require('./routes/adminRoutes');
 
 // Connect to MongoDB Atlas
 const dbURI = "mongodb+srv://TXHeng:@TXHeng1419@bbintranet.66t77.mongodb.net/BBintranet?retryWrites=true&w=majority";
-mongoose.connect(dbURI)
+mongoose.connect(dbURI,{
+    useCreateIndex: true
+})
     .then((result) => app.listen(3000))
     .catch((err) => console.log(err));
 

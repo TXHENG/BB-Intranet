@@ -52,6 +52,9 @@ awardRoute.get('/col-json',AwardController.col_json);
 awardRoute.get('/row-json',AwardController.row_json);
 awardRoute.get('/new',AwardController.new);
 awardRoute.post('/new',AwardController.new);
+awardRoute.get('/:id',AwardController.detail);
+awardRoute.get('/detail/detail-col-json',AwardController.detail_col_json);
+awardRoute.get('/:id/detail-row-json',AwardController.detail_row_json);
 
 const badgeRoute = Router();
 router.use('/badges',requireAdminAuth,badgeRoute);

@@ -1,0 +1,95 @@
+<!-- Modal -->
+<div class="modal fade" id="add-member-modal" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="font-weight-bold text-dark">
+					Add member to this <%= award.badge.name %> Badge Class
+				</h4>
+				<button type="button" class="close" data-dismiss="modal">
+					&times;
+				</button>
+			</div>
+			<form role="form" id="add-member-form">
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="activity_name">Search And Add Member</label>
+						<select id="member_id" name="member_id[]" placeholder="Pick someone"></select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success">Add</button>
+					<button type="reset" class="btn btn-info">Reset</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready( async function(){
+        const opts = await $.get('/admin/awards/<%= award._id  %>/members');
+        console.log(opts);
+        $('#member_id').selectize({
+            persist: false,
+			maxItems: null,
+			optgroupField: 'squad',
+			optgroupLabelField: 'name',
+			optgroupValueField: 'squad',
+			optgroups: [
+				{squad: '1', name: "Squad 1"},
+				{squad: '2', name: "Squad 2"},
+				{squad: '3', name: "Squad 3"},
+				{squad: '4', name: "Squad 4"},
+				{squad: '5', name: "Squad 5"},
+				{squad: '6', name: "Squad 6"},
+				{squad: '7', name: "Squad 7"}
+			],
+            valueField: '_id',
+            labelField: 'name',
+            searchField: ['rank','name', 'squad'],
+            options: opts,
+            render: {
+                item: function(item, escape) {
+                    return '<div>' +
+                        (item.name ? '<span class="name">' + escape(item.rank) + ' ' + escape(item.name) + '</span>' : '') +
+                    '</div>';
+                },
+                option: function(item, escape) {
+					var rank = item.rank;
+                    var name = item.name;
+                    var squad = item.squad;
+                    return '<div>' +
+                        '<span class="label">' + escape(rank) + ' ' + escape(name) + ' - Sq ' + escape(squad) + '</span>' +
+                    '</div>';
+                },
+            },
+        });
+
+		$('#add-member-form').submit( async (e)=>{
+			e.preventDefault();
+			const members_ids = $('[name="member_id[]"]').val();
+			try{
+				const res = await fetch('/admin/awards/<%= award._id  %>/add-members',{
+					method: 'POST',
+					body: JSON.stringify({members_ids}),
+                    headers: {'Content-Type':'application/json'}
+				});
+
+				const data = await res.json();
+
+				if(data.errors){
+					
+				}
+				console.log(data);
+				if(data.success){
+					Swal.fire({
+						title: 'Add Successfully',
+						text : 'Members has been added successfully',
+						icon : 'success'
+					}).then(()=>{location.assign('/admin/awards/<%= award._id  %>');});
+				}
+			} catch(err){}
+		});
+	})
+</script>

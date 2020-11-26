@@ -1,5 +1,5 @@
 const moment = require("moment");
-// const User = require("../../models/User");
+const User = require("../../models/User");
 const Award = require("../../models/Award");
 const ObjectId = require('mongodb').ObjectID;
 
@@ -93,9 +93,82 @@ module.exports.detail = async (req,res) => {
     }
 }
 module.exports.detail_col_json = async (req,res)=>{
-    
+    res.json([
+        {name:"rank",   title:"Rank",   filterable:true, sortable:true, type:"text"},
+        {name:"name",   title:"Name",   filterable:true, sortable:true, type:"text"},
+        {name:"squad",  title:"Squad",  filterable:true, sortable:true, type:"text",breakpoints:"xs sm"},
+        {name:"action", title:"Actions",filterable:false,sortable:false,type:"text",breakpoints:"xs sm"}
+    ]);
 }
 
 module.exports.detail_row_json = async (req,res)=>{
+    const id = req.params.id;
+    let result = [];
+    const award = await Award.findById(id);
+    
+    if(award.members!=""){
+        const users = await User.find({
+            _id:{$in:award.members}
+        });
+        users.forEach(user => {
+            result.push({
+                rank:user.rank,
+                name:user.name,
+                squad:user.squad,
+                action: 
+                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/members/'+ user._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
+                '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id="'+ user._id +'"><i class="far fa-trash-alt"></i></button></div>'
+            });
+        });
+    }
+    res.json(result);
+}
 
+module.exports.members = async (req,res)=>{
+    const award_id = req.params.id;
+    const award = await Award.findById(award_id);
+    let mmbs_arr = award.members.map(member => member.id);
+    
+    console.log(mmbs_arr);
+    let users = await User.find(
+        {_id:{$nin:mmbs_arr}},
+        {password:0,badges:0,email:0});
+    res.json(users);
+}
+
+module.exports.add_members = async (req,res) => {
+    let data = [];
+    const award_id = req.params.id;
+    if(req.method == "POST"){
+        const {members_ids} = req.body;
+        let final_ids = [];
+        members_ids.forEach(id => {
+            final_ids.push({id:id,level:'Advance'})
+        });
+        try{
+            let result = await Award.findByIdAndUpdate( award_id,
+                { $addToSet : { members : { $each : final_ids }}}
+            ).then(()=>{
+                res.json({success:'success'});
+            });
+        } catch (err){
+            console.log(err);
+            res.json({errors:'fail'});
+        }
+    }
+    let award =  await Award.aggregate([
+        { $match: { _id : ObjectId(award_id) }},
+        { $addFields: { "objBadgeId" : { "$toObjectId" : "$badgeId" } } },
+        { $lookup:
+            {
+                from: "badges",
+                localField: "objBadgeId",
+                foreignField: "_id",
+                as: 'badge'
+            }
+        },
+        { $addFields: {'badge':{$arrayElemAt:["$badge",0]}}}
+    ]);
+    data['award'] = award[0];
+    res.render('admin/awards/add-member-modal',data);
 }

@@ -154,17 +154,10 @@ module.exports.detail_row = async (req,res)=>{
 
 module.exports.members = async (req,res)=>{
     const activity_id = req.params.id;
-    let users = {};
     const activity = await Activity.findById(activity_id);
-    if(activity.members != ""){
-        users = await User.find(
-            {_id:{$nin:activity.members}},
-            {password:0,badges:0,email:0});
-    } else{
-        users = await User.find(
-            {},
-            {password:0,badges:0,email:0});
-    }
+    let users = await User.find(
+        {_id:{$nin:activity.members}},
+        {password:0,badges:0,email:0});
     res.json(users);
 }
 

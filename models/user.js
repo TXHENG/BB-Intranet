@@ -42,7 +42,6 @@ const UserSchema = new Schema({
     squad:  {
         type: String
     },
-    badges: [BadgeSchema],
 });
 
 // hash password before save

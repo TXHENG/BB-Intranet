@@ -1,15 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const membersList = new Schema({
-    id: String,
-    level: String
-})
-
 const AwardSchema = new Schema({
     badgeId: String,
+    level: String,
     classDate: Date,
-    members: [membersList]
+    members: [String]
 });
 
 const Award = mongoose.model('award',AwardSchema);

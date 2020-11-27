@@ -3,8 +3,7 @@
     <div class="content-wrapper">
         <div class="content-heading border-bottom row">
             <div class="col">
-                <%- JSON.stringify(award) %>
-                <h1><%= award.badge.name %> Badge</h1>
+                <h1><%= award.level != 'N/A'? award.level:''  %> <%= award.badge.name %> Badge</h1>
                 <p class="text-muted font-weight-bold"> <%= award.badge.groupName %><%= award.badge.group?'(Group '+award.badge.group+')':''  %>  Date: <%= moment(award.classDate).format('DD-MM-YYYY') %></p>
             </div>
             <div class="pull-right">
@@ -35,7 +34,7 @@
             $('[data-delete-id]').click(async function(){
                 let this_row = $(this);
                 const id = $(this).attr("data-delete-id");
-                const url = '/admin/activities/<%= award._id %>/'+id+'/remove-member';
+                const url = '/admin/awards/<%= award._id %>/'+id+'/remove-member';
                 try{
                     const res = await fetch(url,{
                         method:'POST',
@@ -47,12 +46,12 @@
                     if(data.errors){
                         new Noty({
                             type: 'error',
-                            text: 'Error occur when removing member from this activity'
+                            text: 'Error occur when removing member from this award'
                         }).show();
                     } else if (data.name) {
                         new Noty({
                             type: 'success',
-                            text: data.name+' has been remove from this activity'
+                            text: data.name+' has been remove from this award'
                         }).show();
                         this_row.closest('tr').remove();
                     }

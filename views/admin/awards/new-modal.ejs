@@ -27,9 +27,18 @@
                         <select name="badge_id" id="badge_id" required placeholder="== Select Badge =="></select>
 					</div>
 					<div class="form-group">
+						<label for="level">Level</label>
+						<select name="level" id="level" class="form-control" required>
+							<option value="">== Select Level ==</option>
+							<option value="N/A">No Level</option>
+							<option value="Basic">Basic</option>
+							<option value="Advance">Advance</option>
+						</select>
+					</div>
+					<div class="form-group">
 						<label for="class_date">Class Date</label>
 						<input type="date" class="form-control" id="class_date" name="class_date" required>
-					</div>	
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-success">Create</button>
@@ -71,11 +80,12 @@
 			
 			const badge_id = $('#badge_id').val();
 			const class_date = $('#class_date').val();
+			const level = $('#level').val();
 
 			try{
 				const res = await fetch('/admin/awards/new',{
 					method: 'POST',
-					body: JSON.stringify({class_date,badge_id}),
+					body: JSON.stringify({level,class_date,badge_id}),
                     headers: {'Content-Type':'application/json'}
 				});
 

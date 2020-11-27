@@ -24,7 +24,13 @@
                     <tr>
                         <th>Badges</th>
                         <td>:</td>
-                        <td><%= member.badges %></td>
+                        <td>
+                            <ul>
+                                <% badges.forEach(badge => { %>
+                                 <li><%= badge.level != 'N/A' ? badge.level+' ' : '' %><%= badge.badge.name %> Badge</li>
+                                <% }) %>
+                            </ul>
+                        </td>
                     </tr>
                 </table>
             </div>

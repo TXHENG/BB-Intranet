@@ -1,3 +1,4 @@
+const Award = require("../../models/Award");
 const User = require("../../models/User");
 
 module.exports.list = async (req,res)=>{
@@ -34,6 +35,19 @@ module.exports.details = async (req,res)=>{
     var data = [];
     const member_id = req.params.id;
     data['member'] = await User.findById(member_id);
+    data['badges'] = await Award.aggregate([
+        { $match: { members : member_id }},
+        { $addFields: { "objBadgeId" : { "$toObjectId" : "$badgeId" } } },
+        { $lookup:
+            {
+                from: "badges",
+                localField: "objBadgeId",
+                foreignField: "_id",
+                as: 'badge'
+            }
+        },
+        { $addFields: {'badge':{$arrayElemAt:["$badge",0]}}}
+    ]);
     data['path1'] = 'members';
     res.render('admin/users/details',data);
 }

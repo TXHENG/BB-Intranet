@@ -26,10 +26,10 @@ const AdminRoutes = require('./routes/adminRoutes');
 // Connect to MongoDB Atlas
 const dbURI = "mongodb+srv://TXHeng:@TXHeng1419@bbintranet.66t77.mongodb.net/BBintranet?retryWrites=true&w=majority";
 mongoose.connect(dbURI,{
-    useCreateIndex: true
+	useCreateIndex: true
 })
-    .then((result) => app.listen(3000))
-    .catch((err) => console.log(err));
+	.then((result) => app.listen(3000))
+	.catch((err) => console.log(err));
 
 app.use(morgan('dev'));
 // Resoureces
@@ -40,9 +40,16 @@ app.use('/resources',express.static('resources'));
 app.set('subdomain offset', 1);
 
 app.get('*',(req,res,next)=>{
-    res.locals.moment = moment;
-    res.locals.ranks = ['Recruit','Private','Lance Corporal','Corporal','Sergeant','Staff Sergeant'];
-    next();
+	res.locals.moment = moment;
+	res.locals.ranks = [
+		{abv:'RCT',		name: 'Recruit'},
+		{abv:'PTE',		name:'Private'},
+		{abv:'L/CPL',	name:'Lance Corporal'},
+		{abv:'CPL',		name:'Corporal'},
+		{abv:'SGT',		name:'Sergeant'},
+		{abv:'SSGT',	name:'Staff Sergeant'}
+	];
+	next();
 });
 
 // admin route

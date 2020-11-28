@@ -13,6 +13,7 @@ router.post('/sign-in',AdminController.signin_post);
 
 router.use(checkAdmin);
 
+router.get('*',(req,res,next)=>{res.locals.path1 = "home";res.locals.title = "Home"; next();});
 router.get('/',requireAdminAuth,AdminController.index);
 router.get('/home',requireAdminAuth,AdminController.index);
 router.get('/sign-up',requireAdminAuth,AdminController.signup_get);
@@ -21,13 +22,16 @@ router.get('/sign-out',requireAdminAuth,AdminController.signout_get);
 
 const memberRoute = Router();
 router.use('/members',requireAdminAuth,memberRoute);
+memberRoute.get('*',(req,res,next)=>{res.locals.path1 = "members";res.locals.title = "Members Management"; next();});
 memberRoute.get('/',UserController.list);
 memberRoute.get('/row-json',UserController.row_json);
 memberRoute.get('/col-json',UserController.col_json);
+memberRoute.get('/squad-list',UserController.squad_list);
 memberRoute.get('/:id',UserController.details);
 
 const activityRoute = Router();
 router.use('/activities',requireAdminAuth,activityRoute);
+activityRoute.get('*',(req,res,next)=>{res.locals.path1 = "activities";res.locals.title = "Activities Management"; next();});
 activityRoute.get('/',ActivityController.list);
 activityRoute.get('/list-col-json',ActivityController.list_col_json);
 activityRoute.get('/list-row-json',ActivityController.list_row_json);
@@ -47,7 +51,7 @@ activityRoute.post('/:id/edit',ActivityController.edit);
 
 const awardRoute = Router();
 router.use('/awards',requireAdminAuth,awardRoute);
-awardRoute.get('*',(req,res,next)=>{res.locals.path1 = "awards"; next();})
+awardRoute.get('*',(req,res,next)=>{res.locals.path1 = "awards";res.locals.title = "Awards Management"; next();});
 awardRoute.get('/',AwardController.list);
 awardRoute.get('/col-json',AwardController.col_json);
 awardRoute.get('/row-json',AwardController.row_json);

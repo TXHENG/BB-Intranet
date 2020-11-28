@@ -46,8 +46,18 @@ module.exports.details = async (req,res)=>{
                 as: 'badge'
             }
         },
-        { $addFields: {'badge':{$arrayElemAt:["$badge",0]}}}
+        { $addFields: {'name':{$arrayElemAt:["$badge.name",0]}}}
     ]);
+    console.log(data['badges']);
     data['path1'] = 'members';
     res.render('admin/users/details',data);
+}
+
+module.exports.squad_list = async (req,res) => {
+    let squads = await User.distinct('squad');
+    let result = [];
+    squads.forEach(squad => {
+        result.push({squad});
+    });
+    res.json(result);
 }

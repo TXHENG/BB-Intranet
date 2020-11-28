@@ -17,6 +17,7 @@
 
 
     </script>
+    <title><%= title %> - Admin</title>
 </head>
 <body>
     <nav class="navbar fixed-top navbar-light bg-dark">
@@ -24,7 +25,7 @@
             <i class="fa fa-align-justify"></i>
         </button>
         <h3 class="text-light">Admin Site</h3>
-        <img src="/resources/img/logo.png" alt="BB Intranet" id="logo">
+        <a href="/admin/home"><img src="/resources/img/logo.png" alt="BB Intranet" id="logo"></a>
     </nav>
     <div class="wrapper">
         <nav id="sidebar">
@@ -44,6 +45,7 @@
                         <li><a href="/">Home</a></li>
                     </ul>
                 </li> -->
+                <li><a href="/admin/sign-up"><i class="fa fa-plus"></i> Sign Up Admin</a></li>
                 <li><a href="/admin/sign-out"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>

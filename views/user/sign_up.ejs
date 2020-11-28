@@ -115,7 +115,7 @@
                             <select name="rank" id="rank" class="form-control" required>
                                 <option value="">== Select Rank ==</option>
                                 <% ranks.forEach(function(rank,i){ %>
-                                   <option value="<%= i %>"><%= rank %></option> 
+                                   <option value="<%= rank.abv %>"><%= rank.name %></option> 
                                 <% }) %>
                             </select>
                         </div>

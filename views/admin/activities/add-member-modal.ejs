@@ -28,41 +28,31 @@
 </div>
 <script>
 	$(document).ready( async function(){
-        const opts = await $.get('/admin/activities/<%= activity_id %>/members');
-        console.log(opts);
         $('#member_id').selectize({
             persist: false,
 			maxItems: null,
+			plugins: ['remove_button'],
 			optgroupField: 'squad',
 			optgroupLabelField: 'name',
 			optgroupValueField: 'squad',
-			optgroups: [
-				{squad: '1', name: "Squad 1"},
-				{squad: '2', name: "Squad 2"},
-				{squad: '3', name: "Squad 3"},
-				{squad: '4', name: "Squad 4"},
-				{squad: '5', name: "Squad 5"},
-				{squad: '6', name: "Squad 6"},
-				{squad: '7', name: "Squad 7"}
-			],
+			optgroups: await $.get('/admin/members/squad-list'),
             valueField: '_id',
             labelField: 'name',
             searchField: ['rank','name', 'squad'],
-            options: opts,
+            options: await $.get('/admin/activities/<%= activity_id %>/members'),
             render: {
                 item: function(item, escape) {
-                    return '<div>' +
-                        (item.name ? '<span class="name">' + escape(item.rank) + ' ' + escape(item.name) + '</span>' : '') +
-                    '</div>';
+                    return '<div>' + escape(item.rank) + ' ' + escape(item.name) + '</div>';
                 },
                 option: function(item, escape) {
 					var rank = item.rank;
                     var name = item.name;
-                    var squad = item.squad;
-                    return '<div>' +
-                        '<span class="label">' + escape(rank) + ' ' + escape(name) + ' - Sq ' + escape(squad) + '</span>' +
-                    '</div>';
-                },
+					
+                    return '<div class="p-2">'+ escape(rank) + ' ' + escape(name) + '</div>';
+				},
+				optgroup_header: function(item, escape) {
+					return '<div class="optgroup-header bg-danger text-light font-weight-bold text-center">Squad ' + escape(item.squad) + '</div>';
+				}
             },
         });
 

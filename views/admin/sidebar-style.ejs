@@ -36,12 +36,19 @@
     display: block;
     text-decoration: none;
 }
+#sidebar ul li a div.sidebar-icon {
+    width: 30px;
+    display: inline-flex;
+    justify-content: center;
+    margin-right: 5px;
+}
 #sidebar ul li a:hover{
     color: white;
     background-color: var(--myred);
 }
 #sidebar ul li.active{
     border-left: 4px solid #ff9f1c;
+    font-weight: bold;
 }
 #sidebar ul li.active > a,
 #sidebar a[aria-expanded="true"]{

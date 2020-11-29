@@ -34,10 +34,10 @@
                 <h4 class="d-block ml-auto mr-auto"><%= (locals.admin)?admin.name:'-' %></h4>
             </div>
             <ul class="list-unstyled">
-                <li class="<%= (locals.path1)?(path1 === 'home' ? 'active' : ''):'' %>"><a href="/admin/home"><i class="fa fa-home"></i> Home</a>
-                <li class="<%= (locals.path1)?(path1 === 'members' ? 'active' : ''):'' %>"><a href="/admin/members"><i class="fa fa-users"></i> Members list</a></li>
-                <li class="<%= (locals.path1)?(path1 === 'awards' ? 'active' : ''):'' %>"><a href="/admin/awards"><i class="fa fa-certificate"></i> Awards list</a></li>
-                <li class="<%= (locals.path1)?(path1 === 'activities' ? 'active' : ''):'' %>"><a href="/admin/activities"><i class="fa fa-cross"></i> Activities</a></li>
+                <li class="<%= (locals.path1)?(path1 === 'home' ? 'active' : ''):'' %>"><a href="/admin/home"><div class="sidebar-icon"><i class="fa fa-home"></i></div>Home</a>
+                <li class="<%= (locals.path1)?(path1 === 'members' ? 'active' : ''):'' %>"><a href="/admin/members"><div class="sidebar-icon"><i class="fa fa-users"></i></div>Members list</a></li>
+                <li class="<%= (locals.path1)?(path1 === 'awards' ? 'active' : ''):'' %>"><a href="/admin/awards"><div class="sidebar-icon"><i class="fa fa-certificate"></i></div>Awards list</a></li>
+                <li class="<%= (locals.path1)?(path1 === 'activities' ? 'active' : ''):'' %>"><a href="/admin/activities"><div class="sidebar-icon"><i class="fa fa-cross"></i></div>Activities</a></li>
                 <!-- <li class="<% (locals.path1)?(path1 === 'something else' ? 'active' : ''):'' %>">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-home"></i> Home</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -45,8 +45,8 @@
                         <li><a href="/">Home</a></li>
                     </ul>
                 </li> -->
-                <li><a href="/admin/sign-up"><i class="fa fa-plus"></i> Sign Up Admin</a></li>
-                <li><a href="/admin/sign-out"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="/admin/sign-up"><div class="sidebar-icon"><i class="fa fa-user-plus"></i></div>Sign Up Admin</a></li>
+                <li><a href="/admin/sign-out"><div class="sidebar-icon"><i class="fa fa-sign-out-alt"></i></div> Logout</a></li>
             </ul>
         </nav>
         <div id="content">

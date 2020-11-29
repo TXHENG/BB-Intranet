@@ -33,9 +33,9 @@
                 <span class="d-block ml-auto mr-auto"><%= (locals.user && locals.ranks)?ranks[user.rank]:'-' %></span>
             </div>
             <ul class="list-unstyled">
-                <li class="<%= (locals.path1)?(path1 === 'home' ? 'active' : ''):'' %>"><a href="/home"><i class="fas fa-home"></i> Home</a>
-                <li class="<%= (locals.path1)?(path1 === 'activities' ? 'active' : ''):'' %>"><a href="/activities"><i class="fa fa-cross"></i> Activities</a></li>
-                <li class="<%= (locals.path1)?(path1 === 'awards' ? 'active' : ''):'' %>"><a href="/awards"><i class="fas fa-certificate"></i> My Badge list</a></li>
+                <li class="<%= (locals.path1)?(path1 === 'home' ? 'active' : ''):'' %>"><a href="/home"><div class="sidebar-icon"><i class="fas fa-home"></i></div>Home</a>
+                <li class="<%= (locals.path1)?(path1 === 'activities' ? 'active' : ''):'' %>"><a href="/activities"><div class="sidebar-icon"><i class="fa fa-cross"></i></div>Activities</a></li>
+                <li class="<%= (locals.path1)?(path1 === 'awards' ? 'active' : ''):'' %>"><a href="/awards"><div class="sidebar-icon"><i class="fas fa-certificate"></i></div>My Badge list</a></li>
                 <!-- <li class="<%= (locals.path1)?(path1 === 'something else' ? 'active' : ''):'' %>">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-home"></i> Home</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -43,7 +43,7 @@
                         <li><a href="/">Home</a></li>
                     </ul>
                 </li> -->
-                <li><a href="/sign-out"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="/sign-out"><div class="sidebar-icon"><i class="fas fa-sign-out-alt"></i></div>Logout</a></li>
             </ul>
         </nav>
         <div id="content">

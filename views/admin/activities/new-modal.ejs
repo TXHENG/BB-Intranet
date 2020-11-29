@@ -18,13 +18,22 @@
 						<input type="text" class="form-control datepicker" id="activity_name" name="activity_name" placeholder="Enter Activity Name" required>
 					</div>
 					<div class="form-group">
+						<label for="activity_level">Level</label>
+						<select class="form-control" name="activity_level" id="activity_level">
+							<option value="">== Select Activity Level ==</option>
+							<% Object.entries(locals.activity_levels).forEach(lvl => { %>
+								<option value="<%= lvl[0] %>"><%= lvl[0] %></option>
+							<% }) %>
+						</select>
+					</div>
+					<div class="form-group">
 						<label for="start_date">Start Date</label>
 						<input type="date" class="form-control" id="start_date" name="start_date" required>
 					</div>
 					<div class="form-group">
 						<label for="end_date">End Date</label>
 						<input type="date" class="form-control" id="end_date" name="end_date" required>
-					</div>	
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-success">Create</button>
@@ -48,11 +57,12 @@
 			const start_date = $('#start_date').val();
 			const end_date = $('#end_date').val();
 			const activity_name = $('#activity_name').val();
+			const activity_level = $('#activity_level').val();
 
 			try{
 				const res = await fetch('/admin/activities/new',{
 					method: 'POST',
-					body: JSON.stringify({start_date,end_date,activity_name}),
+					body: JSON.stringify({start_date,end_date,activity_name,activity_level}),
                     headers: {'Content-Type':'application/json'}
 				});
 

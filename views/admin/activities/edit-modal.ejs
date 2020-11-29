@@ -18,6 +18,15 @@
 						<input type="text" class="form-control datepicker" id="edit_activity_name" name="edit_activity_name" placeholder="Enter Activity Name" required value="<%= activity.name %>">
 					</div>
 					<div class="form-group">
+						<label for="activity_level">Level</label>
+						<select class="form-control" name="activity_level" id="activity_level">
+							<option value="">== Select Activity Level ==</option>
+							<% Object.entries(locals.activity_levels).forEach(lvl => { %>
+								<option value="<%= lvl[0] %>" <%= lvl[0] == activity.level ? 'selected' : '' %> ><%= lvl[0] %></option>
+							<% }) %>
+						</select>
+					</div>
+					<div class="form-group">
 						<label for="edit_start_date">Start Date</label>
 						<input type="date" class="form-control" id="edit_start_date" name="edit_start_date" required value="<%= moment(activity.startDate).format('YYYY-MM-DD') %>">
 					</div>
@@ -47,11 +56,12 @@
 			const start_date = $('#edit_start_date').val();
 			const end_date = $('#edit_end_date').val();
 			const activity_name = $('#edit_activity_name').val();
-
+			const activity_level = $('#activity_level').val();
+			console.log(activity_level);
 			try{
 				const res = await fetch('/admin/activities/<%= activity._id %>/edit',{
 					method: 'POST',
-					body: JSON.stringify({start_date,end_date,activity_name}),
+					body: JSON.stringify({start_date,end_date,activity_name,activity_level}),
                     headers: {'Content-Type':'application/json'}
 				});
 

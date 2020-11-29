@@ -13,10 +13,11 @@ module.exports.list = async (req,res)=>{
 module.exports.list_col_json = async (req,res)=>{
     res.json([
         {name:"activityName",   title:"Activity Name",  "filterable":true, "sortable":true, type:"text"},
+        {name:"level",          title:"Level",          "filterable":true, "sortable":true, type:"text","breakpoints":"xs sm"},
         {name:"startDate",      title:"Start Date",     "filterable":true, "sortable":true, type:"date"},
         {name:"endDate",        title:"End Date",       "filterable":true, "sortable":true, type:"date","breakpoints":"xs sm"},
         {name:"duration",       title:"Duration(Days)", "filterable":true, "sortable":true, type:"number","breakpoints":"xs sm"},
-        {name:"participants",    title:"Participants",   "filterable":false,"sortable":true, type:"number","breakpoints":"xs sm"},
+        {name:"participants",   title:"Participants",   "filterable":false,"sortable":true, type:"number","breakpoints":"xs sm"},
         {name:"action",         title:"Actions",        "filterable":false,"sortable":false,type:"text","breakpoints":"xs sm",},
     ]);
 };
@@ -31,6 +32,7 @@ module.exports.list_row_json = async (req,res)=>{
     activities.forEach(activity => {
         rows.push({
             activityName:activity.name,
+            level:  activity.level,
             startDate   :moment(activity.startDate).format('DD-MMM-YYYY'),
             endDate     :moment(activity.endDate).format('DD-MMM-YYYY'),
             duration    :moment(activity.endDate).diff(moment(activity.startDate),'days') + 1,
@@ -56,12 +58,13 @@ module.exports.info = async (req,res)=>{
 
 module.exports.new = async (req,res)=>{
     if(req.method == 'POST'){
-        const {activity_name, start_date, end_date} = req.body;
+        const {activity_name, start_date, end_date, activity_level} = req.body;
         try{
             const activity = await Activity.create({
                 name: activity_name,
                 startDate: start_date,
                 endDate: end_date,
+                level: activity_level
             });
             res.status(201).json({activity});
         } catch (err) {
@@ -79,6 +82,7 @@ module.exports.detail = async (req,res)=>{
     data['id'] = id;
     try{
         data['activity'] = await Activity.findById(id);
+        console.log(data['activity']);
         res.render('admin/activities/detail',data);
     } catch(err){
         res.redirect('/admin/404');
@@ -104,11 +108,11 @@ module.exports.edit = async (req,res)=>{
     const id = req.params.id;
     let data = [];
     if(req.method == 'POST'){
-        const {activity_name, start_date, end_date} = req.body;
+        const {activity_name, start_date, end_date, activity_level} = req.body;
         try{
             const activity = await Activity.findById(id);
             if(activity){
-                const data = await Activity.findByIdAndUpdate(id,{name:activity_name,startDate:start_date,endDate:end_date});
+                const data = await Activity.findByIdAndUpdate(id,{name:activity_name,startDate:start_date,endDate:end_date, level: activity_level});
                 console.log(data);
                 res.status(201).json({activity:data});
             }

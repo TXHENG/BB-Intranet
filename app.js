@@ -49,6 +49,16 @@ app.get('*',(req,res,next)=>{
 		{abv:'SGT',		name:'Sergeant'},
 		{abv:'SSGT',	name:'Staff Sergeant'}
 	];
+	res.locals.activity_levels = [
+		{name: 'Company / School Level', point: 1},
+		{name: 'State Level / Community', point: 2},
+		{name: 'National / BBM Level', point: 3}
+	];
+	res.locals.activity_levels = {
+		'Company / School Level': 1,
+		'State Level / Community': 2,
+		'National / BBM Level': 3
+	};
 	next();
 });
 

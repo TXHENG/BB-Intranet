@@ -1,0 +1,36 @@
+<%- include('../partials/header.ejs') -%>
+<section>
+    <div class="content-wrapper">
+        <div class="content-heading border-bottom row">
+            <h1 class="col">Awards List</h1>
+            <!-- <select name="year" id="year" class="form-control col-lg-2 col-md-2 mt-md-2 mt-lg-2 mt-sm-2">
+                <%var selectedYear = locals.year ? year : moment().year() %>
+                <% for(var i = moment().year(); i >= 2019; i-- ) { %>
+                    <option value="<%= i %>" <%= i==selectedYear?"selected":"" %> ><%= i %></option>
+                <% } %> 
+            </select> -->
+        </div>
+        <div class="content-body">
+            <table class="table" id="badge-list" data-filtering="true" data-sorting="true" data-paging="true" data-paging-count-format="{CP} of {TP} (total {TR} records)" data-filter-position="right">
+                
+            </table>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function(){
+        $('#badge-list').footable({
+            columns: $.get('/awards/list-col'),
+            rows: $.get('/awards/list-row'),
+            paging:{
+                size:15,
+            },
+            components:{
+                filtering: FooTable.MyFiltering
+            }
+        },()=>{
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    });
+</script>
+<%- include('../partials/footer.ejs') -%>

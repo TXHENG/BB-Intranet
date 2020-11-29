@@ -4,11 +4,11 @@ const bcrypt  = require('bcrypt');
 
 const Schema = mongoose.Schema;
 
-const BadgeSchema = new Schema({
-    badgeId: String,
-    basicClassId: String,
-    advanceClassId: String,
-});
+// const BadgeSchema = new Schema({
+//     badgeId: String,
+//     basicClassId: String,
+//     advanceClassId: String,
+// });
 
 const UserSchema = new Schema({
     name: {

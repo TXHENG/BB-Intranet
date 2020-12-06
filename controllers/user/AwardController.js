@@ -38,3 +38,42 @@ module.exports.list_row = async (req,res) => {
     });
     res.json(result);
 }
+
+module.exports.right_cheveron = async(req,res) => {
+    let data = [];
+    let awards =  await Award.aggregate([
+        { $addFields: { "objBadgeId" : { "$toObjectId" : "$badgeId" } } },
+        { $sort: { classDate: -1 } },
+        { $match: {'members': res.locals.user._id.toString()}},
+		{ $lookup:
+			{
+				from: "badges",
+				localField: "objBadgeId",
+				foreignField: "_id",
+				as: 'badge'
+			}
+        },
+        { $addFields: {'badge':{$arrayElemAt:["$badge",0]}}},
+        { $match: { 'badge.name' : {$not : { $eq: 'Target'}}}},
+        { $sort : { 'badge.name' : 1} },
+    ]);
+    let target =  await Award.aggregate([
+        { $addFields: { "objBadgeId" : { "$toObjectId" : "$badgeId" } } },
+        { $sort: { classDate: -1 } },
+        { $match: {'members': res.locals.user._id.toString()}},
+		{ $lookup:
+			{
+				from: "badges",
+				localField: "objBadgeId",
+				foreignField: "_id",
+				as: 'badge'
+			}
+        },
+        { $addFields: {'badge':{$arrayElemAt:["$badge",0]}}},
+        { $match: { 'badge.name' : { $eq: 'Target'}}},
+        { $sort : { 'badge.name' : 1} },
+    ]);
+    data['awards'] = awards;
+    data['have_target'] = target?true:false;
+    res.render('user/awards/right-cheveron', data);
+}

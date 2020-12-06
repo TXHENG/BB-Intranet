@@ -1,0 +1,72 @@
+<%- include('../partials/header.ejs') -%>
+<style>
+    .cheveron {
+
+    }
+    .right-cheveron{
+        width: 600px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .award-row{
+        background-color: black;
+        width: 600px;
+        display: flex;
+        overflow: hidden;
+        justify-content: space-around;
+        padding: 10px 0;
+    }
+    .award-container {
+        border-radius: 50%;
+        width: 110px;
+        height: 110px;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .award-container.Advance{
+        background-color: var(--red);
+    }
+    .award-container img.award {
+        width: 90%;
+    }
+    .rank{
+        width: 600px;
+    }
+    .rank img {
+        width: 100%;
+    }
+</style>
+<section>
+    <div class="content-wrapper">
+        <div class="content-heading border-bottom row">
+            <h1 class="col">Right Cheveron</h1>
+        </div>
+        <div class="content-body">
+            <div class="cheveron">
+                <% if (have_target) { %>
+                    <div class="right-cheveron">
+                        <div class="award-row">
+                            <div class="award-container">
+                                <img class="award" src="../../../resources/img/badges/Target.png" alt="Target Badge">
+                            </div>
+                        <% awards.forEach((award,i) => { %>
+                            <div class="award-container <%=award.level %>">
+                                <img class="award" src="../../../resources/img/badges/<%=award.badge.name %>.png" alt="<%=award.badge.name %> Badge">
+                            </div>
+                            <%- ((i+2)%5 == 0)?'</div><div class="award-row">':'' %>
+                            <% }) %>
+                        </div>
+                        <div class="rank">
+                            <img src="../../../resources/img/ranks/<%= user.rank.replace('/','') %>.png" alt="">
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</script>
+<%- include('../partials/footer.ejs') -%>

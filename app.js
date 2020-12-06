@@ -42,7 +42,7 @@ app.set('subdomain offset', 1);
 app.get('*',(req,res,next)=>{
 	res.locals.moment = moment;
 	res.locals.ranks = [
-		{abv:'RCT',		name: 'Recruit'},
+		{abv:'RCT',		name:'Recruit'},
 		{abv:'PTE',		name:'Private'},
 		{abv:'L/CPL',	name:'Lance Corporal'},
 		{abv:'CPL',		name:'Corporal'},

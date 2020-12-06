@@ -35,6 +35,7 @@ awardRoute.get('*',(req,res,next)=>{res.locals.path1="awards";next();})
 awardRoute.get('/',AwardController.list);
 awardRoute.get('/list-row',AwardController.list_row);
 awardRoute.get('/list-col',AwardController.list_col);
+awardRoute.get('/right-cheveron',AwardController.right_cheveron);
 
 router.get('/404',(req,res)=>{
     res.status(404).render('user/404');

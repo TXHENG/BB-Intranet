@@ -16,6 +16,7 @@
     left: 0;
     overflow-y: auto;
     border: var(--mylightgey);
+    z-index: 999;
 }
 #sidebar.active{
     margin-left: -250px;
@@ -79,11 +80,17 @@
 #content.active{
     margin-left: 0;
 }
-@media (max-width: 768px){
+@media only screen and (max-width: 768px){
     #sidebar{
         margin-left: -250px;
     }
     #sidebar.active{
+        margin-left: 0;
+    }
+    #content{
+        margin-left: 0;
+    }
+    #content.active{
         margin-left: 0;
     }
 }

@@ -43,7 +43,6 @@ module.exports.right_cheveron = async(req,res) => {
     let data = [];
     let awards =  await Award.aggregate([
         { $addFields: { "objBadgeId" : { "$toObjectId" : "$badgeId" } } },
-        { $sort: { classDate: -1 } },
         { $match: {'members': res.locals.user._id.toString()}},
 		{ $lookup:
 			{
@@ -54,8 +53,10 @@ module.exports.right_cheveron = async(req,res) => {
 			}
         },
         { $addFields: {'badge':{$arrayElemAt:["$badge",0]}}},
-        { $match: { 'badge.name' : {$not : { $eq: 'Target'}}}},
-        { $sort : { 'badge.name' : 1} },
+        { $match: { 
+            'badge.name' : {$not : { $eq: 'Target'}} , 
+            'badge.groupName' : {$in : ['Compulsory','Interest','Adventure','Community','Physical']}}},
+        { $sort : { 'badge.name' : 1  , 'level' : 1} },
     ]);
     let target =  await Award.aggregate([
         { $addFields: { "objBadgeId" : { "$toObjectId" : "$badgeId" } } },
@@ -73,7 +74,15 @@ module.exports.right_cheveron = async(req,res) => {
         { $match: { 'badge.name' : { $eq: 'Target'}}},
         { $sort : { 'badge.name' : 1} },
     ]);
-    data['awards'] = awards;
+    let result = [];
+    awards.forEach(a => {
+        if(!result.find(x => x['name'] == a.badge.name))
+            result.push({ 
+                'name' : a.badge.name, 
+                'level': a.level,
+            });
+    });
+    data['awards'] = result;
     data['have_target'] = target?true:false;
     res.render('user/awards/right-cheveron', data);
 }

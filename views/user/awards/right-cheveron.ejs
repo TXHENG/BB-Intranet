@@ -1,8 +1,5 @@
 <%- include('../partials/header.ejs') -%>
 <style>
-    .cheveron {
-
-    }
     .right-cheveron{
         width: 600px;
         margin: auto;
@@ -39,6 +36,27 @@
     .rank img {
         width: 100%;
     }
+	@media only screen and (max-width: 768px){
+		.right-cheveron{
+			width: 100%;
+		}
+		.award-row{
+			width: 100%;
+			padding: 5px 0;
+		}
+		.award-container {
+			border-radius: 50%;
+			max-width: 70px;
+			max-height: 70px;
+			padding: 5px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.rank{
+			width: 100%;
+		}
+	}
 </style>
 <section>
     <div class="content-wrapper">
@@ -55,7 +73,7 @@
                             </div>
                         <% awards.forEach((award,i) => { %>
                             <div class="award-container <%=award.level %>">
-                                <img class="award" src="../../../resources/img/badges/<%=award.badge.name %>.png" alt="<%=award.badge.name %> Badge">
+                                <img class="award" src="../../../resources/img/badges/<%=award.name %>.png" alt="<%=award.name %> Badge">
                             </div>
                             <%- ((i+2)%5 == 0)?'</div><div class="award-row">':'' %>
                             <% }) %>

@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Try to create an intranet using node js",
   "main": "app.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node app.js"
+  },
   "start": "node app.js",
   "engines": {
     "node": "12.18.3",

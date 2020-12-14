@@ -28,7 +28,7 @@ const dbURI = "mongodb+srv://TXHeng:@TXHeng1419@bbintranet.66t77.mongodb.net/BBi
 mongoose.connect(dbURI,{
 	useCreateIndex: true
 })
-	.then((result) => app.listen(3000))
+	.then((result) => app.listen(process.env.PORT||3000))
 	.catch((err) => console.log(err));
 
 app.use(morgan('dev'));

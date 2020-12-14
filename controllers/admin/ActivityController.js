@@ -1,6 +1,6 @@
 const moment = require("moment");
-const Activity = require("../../models/Activity");
-const User = require("../../models/User");
+const Activity = require("../../models/activity");
+const User = require("../../models/user");
 
 module.exports.list = async (req,res)=>{
     var data = [];

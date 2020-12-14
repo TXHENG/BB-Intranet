@@ -15,9 +15,9 @@ mongoose.set('useUnifiedTopology',true);
 mongoose.set('useFindAndModify', false);
 
 // Models
-const User = require('./models/User');
-const Badge = require('./models/Badge');
-const Admin = require('./models/Admin');
+const User = require('./models/user');
+const Badge = require('./models/badge');
+const Admin = require('./models/admin');
 
 // Routes
 const UserRoutes = require('./routes/userRoutes');

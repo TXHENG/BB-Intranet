@@ -1,5 +1,5 @@
 const moment = require("moment");
-const Activity = require("../../models/Activity");
+const Activity = require("../../models/activity");
 
 module.exports.list = async (req,res) => {
     let data = [];

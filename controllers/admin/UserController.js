@@ -1,5 +1,5 @@
-const Award = require("../../models/Award");
-const User = require("../../models/User");
+const Award = require("../../models/award");
+const User = require("../../models/user");
 
 module.exports.list = async (req,res)=>{
     var data = [];

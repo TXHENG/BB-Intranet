@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const Admin = require('./../../models/Admin');
+const Admin = require('../../models/Admin');
 // error handler
 const handleAdminSignUpInErrors = (err) => {
     console.log(err.message, err.code);

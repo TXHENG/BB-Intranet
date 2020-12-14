@@ -1,5 +1,5 @@
 const moment = require("moment");
-const Badge = require("../../models/Badge");
+const Badge = require("../../models/badge");
 
 module.exports.group_names = async (req,res) => {
     let badge_groups = await Badge.distinct('groupName');

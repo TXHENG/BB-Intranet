@@ -1,6 +1,6 @@
 const { resolveInclude } = require('ejs');
 const moment = require('moment');
-const Award = require('../../models/Award');
+const Award = require('../../models/award');
 module.exports.list = async (req,res) => {
     res.render('user/awards/list');
 }

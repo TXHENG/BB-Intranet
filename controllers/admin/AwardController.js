@@ -1,6 +1,6 @@
 const moment = require("moment");
-const User = require("../../models/User");
-const Award = require("../../models/Award");
+const User = require("../../models/user");
+const Award = require("../../models/award");
 const ObjectId = require('mongodb').ObjectID;
 
 module.exports.list = (req,res)=>{

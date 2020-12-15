@@ -1,4 +1,11 @@
 // modules
+if(process.env.NODE_ENV){
+	require("dotenv").config({
+		path: `${__dirname}/.env.${process.env.NODE_ENV}`,
+	});
+} else {
+	require("dotenv").config();
+}
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -24,7 +31,8 @@ const UserRoutes = require('./routes/userRoutes');
 const AdminRoutes = require('./routes/adminRoutes');
 
 // Connect to MongoDB Atlas
-const dbURI = "mongodb+srv://TXHeng:@TXHeng1419@bbintranet.66t77.mongodb.net/BBintranet?retryWrites=true&w=majority";
+let url = (process.env.DB_URL).replace("%user",process.env.DB_USER).replace("%password",process.env.DB_PASSWORD).replace('%dbname',process.env.DB_NAME);
+const dbURI = url;
 mongoose.connect(dbURI,{
 	useCreateIndex: true
 })
@@ -40,6 +48,8 @@ app.use('/resources',express.static('resources'));
 app.set('subdomain offset', 1);
 
 app.get('*',(req,res,next)=>{
+	console.log(process.env.NODE_ENV);
+	console.log('x');
 	res.locals.moment = moment;
 	res.locals.ranks = [
 		{abv:'RCT',		name:'Recruit'},

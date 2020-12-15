@@ -49,8 +49,6 @@ app.use('/resources',to_cache,express.static('resources'));
 app.set('subdomain offset', 1);
 
 app.get('*',(req,res,next)=>{
-	console.log(process.env.NODE_ENV);
-	console.log('x');
 	res.locals.moment = moment;
 	res.locals.ranks = [
 		{abv:'RCT',		name:'Recruit'},

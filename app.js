@@ -6,6 +6,7 @@ if(process.env.NODE_ENV){
 } else {
 	require("dotenv").config();
 }
+const {to_cache} = require('./middleware/cacheResourceMiddleware');
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -41,8 +42,8 @@ mongoose.connect(dbURI,{
 
 app.use(morgan('dev'));
 // Resoureces
-app.use('/node_modules',express.static('node_modules'));
-app.use('/resources',express.static('resources'));
+app.use('/node_modules',to_cache,express.static('node_modules'));
+app.use('/resources',to_cache,express.static('resources'));
 
 // routes (will automatically find in "views" folder)
 app.set('subdomain offset', 1);

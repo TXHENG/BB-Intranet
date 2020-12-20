@@ -78,7 +78,7 @@ router.get('/404',(req,res)=>{
 });
 
 router.use((req,res)=>{
-	res.redirect('/admin/404');
+	res.redirect('/404');
 });
 
 module.exports = router;

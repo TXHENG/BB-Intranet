@@ -38,8 +38,8 @@ module.exports.list_row_json = async (req,res)=>{
             duration    :moment(activity.endDate).diff(moment(activity.startDate),'days') + 1,
             participants:(activity.members).length ,
             action      :
-                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/activities/'+ activity._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
-                '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-ajax-modal="/admin/activities/'+activity._id+'/edit"><i class="fa fa-pen"></i></button>'+
+                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/activities/'+ activity._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
+                '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-ajax-modal="/activities/'+activity._id+'/edit"><i class="fa fa-pen"></i></button>'+
                 '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id="'+activity._id+'"><i class="far fa-trash-alt"></i></button></div>'
         }); 
     });
@@ -85,7 +85,7 @@ module.exports.detail = async (req,res)=>{
         console.log(data['activity']);
         res.render('admin/activities/detail',data);
     } catch(err){
-        res.redirect('/admin/404');
+        res.redirect('/404');
     }
     
 }
@@ -148,7 +148,7 @@ module.exports.detail_row = async (req,res)=>{
                 name:user.name,
                 squad:user.squad,
                 action: 
-                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/members/'+ user._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
+                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/members/'+ user._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
                 '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id="'+ user._id +'"><i class="far fa-trash-alt"></i></button></div>'
             });
         });

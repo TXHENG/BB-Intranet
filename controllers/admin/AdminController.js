@@ -82,5 +82,5 @@ module.exports.signin_post = async (req,res)=>{
 
 module.exports.signout_get = (req, res)=>{
     res.cookie('jwt','',{ maxAge:1 });
-    res.redirect('/admin/sign-in');
+    res.redirect('/sign-in');
 }

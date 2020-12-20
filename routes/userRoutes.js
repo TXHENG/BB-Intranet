@@ -37,12 +37,4 @@ awardRoute.get('/list-row',AwardController.list_row);
 awardRoute.get('/list-col',AwardController.list_col);
 awardRoute.get('/right-cheveron',AwardController.right_cheveron);
 
-router.get('/404',(req,res)=>{
-    res.status(404).render('user/404');
-});
-
-router.use((req,res)=>{
-    res.redirect('/404');
-});
-
 module.exports = router;

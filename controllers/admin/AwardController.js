@@ -45,8 +45,8 @@ module.exports.row_json = async (req,res)=>{
             classDate     :moment(award.classDate).format('DD-MMM-YYYY'),
             participants  :award.members.length ,
             action        :
-                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/awards/'+ award._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
-                '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-ajax-modal="/admin/awards/'+award._id+'/edit"><i class="fa fa-pen"></i></button>'+
+                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/awards/'+ award._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
+                '<button class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Edit" data-ajax-modal="/awards/'+award._id+'/edit"><i class="fa fa-pen"></i></button>'+
                 '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id="'+award._id+'"><i class="far fa-trash-alt"></i></button></div>'
         }); 
     });
@@ -119,7 +119,7 @@ module.exports.edit = async (req,res) => {
         res.render('admin/awards/edit-modal',data);
     } catch (err) {
         console.log(err);
-        res.redirect('/admin/404');
+        res.redirect('/404');
     }
 }
 
@@ -144,7 +144,7 @@ module.exports.detail = async (req,res) => {
         res.render('admin/awards/detail',data);
     } catch (err) {
         console.log(err);
-        res.redirect('/admin/404');
+        res.redirect('/404');
     }
 }
 module.exports.detail_col_json = async (req,res)=>{
@@ -171,7 +171,7 @@ module.exports.detail_row_json = async (req,res)=>{
                 name:user.name,
                 squad:user.squad,
                 action: 
-                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/members/'+ user._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
+                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/members/'+ user._id +'" target="_blank"><i class="fa fa-search"></i></a>'+
                 '<button class="btn-danger btn btn-sm" data-toggle="tooltip" title="Delete" data-delete-id="'+ user._id +'"><i class="far fa-trash-alt"></i></button></div>'
             });
         });

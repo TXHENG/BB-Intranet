@@ -57,7 +57,7 @@
 			const level = $('#level').val();
 
 			try{
-				const res = await fetch('/admin/awards/<%= award._id %>/edit',{
+				const res = await fetch('/awards/<%= award._id %>/edit',{
 					method: 'POST',
 					body: JSON.stringify({level,class_date}),
                     headers: {'Content-Type':'application/json'}

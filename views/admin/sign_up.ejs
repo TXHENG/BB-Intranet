@@ -85,9 +85,9 @@
 
 <body class="h-100">
     <nav class="navbar fixed-top navbar-light bg-dark">
-        <a href="/admin/home"><img src="/resources/img/logo.png" alt="BB Intranet" id="logo" style="height: 50px;" class="float-right"></a>
+        <a href="/home"><img src="/resources/img/logo.png" alt="BB Intranet" id="logo" style="height: 50px;" class="float-right"></a>
         <div>
-            <a class="pointer text-light btn btn-success" href="/admin/sign-in">Sign In</a> 
+            <a class="pointer text-light btn btn-success" href="/sign-in">Sign In</a> 
             <!-- <a class="pointer text-light btn btn-primary active" href="#">Sign Up</a> -->
         </div>
     </nav>
@@ -146,7 +146,7 @@
 
                 <div class="mt-4">
                     <div class="d-flex justify-content-center links">
-                        Already have an account? <a href="/admin/sign-in" class="ml-2">Sign In</a>
+                        Already have an account? <a href="/sign-in" class="ml-2">Sign In</a>
                     </div>
                 </div>
             </div>
@@ -216,7 +216,7 @@
                 const gender = $("[name='gender']").val();
                 const password = $("[name='password']").val();
                 try{
-                    const res = await fetch('/admin/sign-up',{
+                    const res = await fetch('/sign-up',{
                         method:'POST',
                         body: JSON.stringify({name,email,gender,password}),
                         headers: {'Content-Type':'application/json'}
@@ -233,7 +233,7 @@
                             title: 'Register Successfully',
                             text : 'Your account has been registered successfully',
                             icon : 'success'
-                        }).then(()=>{location.assign('/admin/sign-in');});
+                        }).then(()=>{location.assign('/sign-in');});
                     }
                 }
                 catch(err){}

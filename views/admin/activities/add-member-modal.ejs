@@ -35,11 +35,11 @@
 			optgroupField: 'squad',
 			optgroupLabelField: 'name',
 			optgroupValueField: 'squad',
-			optgroups: await $.get('/admin/members/squad-list'),
+			optgroups: await $.get('/members/squad-list'),
             valueField: '_id',
             labelField: 'name',
             searchField: ['rank','name', 'squad'],
-            options: await $.get('/admin/activities/<%= activity_id %>/members'),
+            options: await $.get('/activities/<%= activity_id %>/members'),
             render: {
                 item: function(item, escape) {
                     return '<div>' + escape(item.rank) + ' ' + escape(item.name) + '</div>';
@@ -60,7 +60,7 @@
 			e.preventDefault();
 			const members_ids = $('[name="member_id[]"]').val();
 			try{
-				const res = await fetch('/admin/activities/<%= activity_id %>/add-members',{
+				const res = await fetch('/activities/<%= activity_id %>/add-members',{
 					method: 'POST',
 					body: JSON.stringify({members_ids}),
                     headers: {'Content-Type':'application/json'}
@@ -77,7 +77,7 @@
 						title: 'Add Successfully',
 						text : 'Members has been added successfully',
 						icon : 'success'
-					}).then(()=>{location.assign('/admin/activities/<%= activity_id %>');});
+					}).then(()=>{location.assign('/activities/<%= activity_id %>');});
 				}
 			} catch(err){}
 		});

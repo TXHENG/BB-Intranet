@@ -59,7 +59,7 @@
 			const activity_level = $('#activity_level').val();
 			console.log(activity_level);
 			try{
-				const res = await fetch('/admin/activities/<%= activity._id %>/edit',{
+				const res = await fetch('//activities/<%= activity._id %>/edit',{
 					method: 'POST',
 					body: JSON.stringify({start_date,end_date,activity_name,activity_level}),
                     headers: {'Content-Type':'application/json'}
@@ -80,7 +80,7 @@
 						title: 'Modify Successfully',
 						text : '"<%= activity.name %>" has been modified successfully',
 						icon : 'success'
-					}).then(()=>{location.assign('/admin/activities');});
+					}).then(()=>{location.assign('/activities');});
 				}
 			} catch(err){}
 		});

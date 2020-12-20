@@ -22,11 +22,11 @@ const requireAdminAuth = (req,res,next) => {
         if(validToken(token)){
             next();
         } else {
-            res.redirect('/admin/sign-in');
+            res.redirect('/sign-in');
         }
     } else {
         // no token
-        res.redirect('/admin/sign-in');
+        res.redirect('/sign-in');
     }
 }
 

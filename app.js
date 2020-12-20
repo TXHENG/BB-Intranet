@@ -8,6 +8,7 @@ if(process.env.NODE_ENV){
 }
 const {to_cache} = require('./middleware/cacheResourceMiddleware');
 const express = require('express');
+const subdomain = require('express-subdomain');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const moment = require('moment');
@@ -21,11 +22,6 @@ app.use(cookieParser());
 mongoose.set('useNewUrlParser',true);
 mongoose.set('useUnifiedTopology',true);
 mongoose.set('useFindAndModify', false);
-
-// Models
-const User = require('./models/user');
-const Badge = require('./models/badge');
-const Admin = require('./models/admin');
 
 // Routes
 const UserRoutes = require('./routes/userRoutes');
@@ -72,7 +68,16 @@ app.get('*',(req,res,next)=>{
 });
 
 // admin route
-app.use('/admin', AdminRoutes);
+app.use(subdomain('admin',AdminRoutes));
+// app.use('/admin', AdminRoutes);
 
 // user route
 app.use(UserRoutes);
+
+app.get('/404',(req,res)=>{
+    res.status(404).render('user/404');
+});
+
+app.use((req,res)=>{
+    res.redirect('/404');
+});

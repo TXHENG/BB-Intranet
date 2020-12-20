@@ -25,7 +25,7 @@ module.exports.row_json = async (req,res)=>{
             name: user.name,
             squad: user.squad,
             action: 
-                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/admin/members/'+ user._id +'" target="_blank"><i class="fa fa-search"></i></a></div>'
+                '<div class="btn-group"><a class="btn-default btn btn-sm border-primary text-primary" data-toggle="tooltip" title="Details" href="/members/'+ user._id +'" target="_blank"><i class="fa fa-search"></i></a></div>'
         });
     });
     res.json(result);

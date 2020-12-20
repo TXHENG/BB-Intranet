@@ -53,8 +53,8 @@
 
 		$('#badge_id').selectize({
 			maxItems: 1,
-			options: await $.get('/admin/badges/badges'),
-			optgroups: await $.get('/admin/badges/groupNames'),
+			options: await $.get('/badges/badges'),
+			optgroups: await $.get('/badges/groupNames'),
 			optgroupField: 'groupName',
 			optgroupLabelField: 'groupName',
 			optgroupValueField: 'groupName',
@@ -83,7 +83,7 @@
 			const level = $('#level').val();
 
 			try{
-				const res = await fetch('/admin/awards/new',{
+				const res = await fetch('/awards/new',{
 					method: 'POST',
 					body: JSON.stringify({level,class_date,badge_id}),
                     headers: {'Content-Type':'application/json'}
@@ -100,7 +100,7 @@
 						title: 'Create Successfully',
 						text : 'New award has been created successfully',
 						icon : 'success'
-					}).then(()=>{location.assign('/admin/awards/'+data.award._id);});
+					}).then(()=>{location.assign('/awards/'+data.award._id);});
 				}
 			} catch(err){}
 		});

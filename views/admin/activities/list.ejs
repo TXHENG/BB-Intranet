@@ -4,7 +4,7 @@
         <div class="content-heading border-bottom row">
             <h1 class="col">Activity List</h1>
             <div class="col-lg-2 col-md-2 mt-md-2 mt-lg-2 text-right">
-                <button class="btn btn-info" style="align-self: flex-end;" data-ajax-modal='/admin/activities/new'>New activity</button>
+                <button class="btn btn-info" style="align-self: flex-end;" data-ajax-modal='/activities/new'>New activity</button>
             </div>
             <select name="year" id="year" class="form-control col-lg-2 col-md-2 mt-md-2 mt-lg-2 mt-sm-2">
                 <%var selectedYear = locals.year ? year : moment().year() %>
@@ -23,8 +23,8 @@
 <script>
     $(document).ready(async()=>{
         $('#activity-list').footable({
-            columns: $.get('/admin/activities/list-col-json'),
-            rows: $.get('/admin/activities/list-row-json?year=<%= selectedYear %>'),
+            columns: $.get('/activities/list-col-json'),
+            rows: $.get('/activities/list-row-json?year=<%= selectedYear %>'),
             paging:{
                 size:15,
             },
@@ -35,7 +35,7 @@
 
             $('#year').change(function(){
                 if($(this).val().toString() != ""){
-                    location.replace('/admin/activities?year='+$(this).val().toString());
+                    location.replace('/activities?year='+$(this).val().toString());
                 }
             });
 
@@ -53,7 +53,7 @@
                     cancelButtonText: 'Cancel',
                 }).then(async(result)=>{
                     if(result.isConfirmed){
-                        const url = '/admin/activities/'+id+'/delete';
+                        const url = '/activities/'+id+'/delete';
                         try{
                             const res = await fetch(url,{
                                 method:'POST',
